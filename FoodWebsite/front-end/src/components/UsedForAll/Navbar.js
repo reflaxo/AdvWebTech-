@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownItem } from 'reactstrap';
   import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Quiz from "../Quiz/Quiz.js";
+import Quiz from "../Quiz/QuizBack.js/index.js";
 import About from "../About/About.js";
 import Recipe from "../Recipe/Recipe.js";
 

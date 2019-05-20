@@ -12,7 +12,7 @@ import {
 
 } from "reactstrap";
 
-import Quiz from './components/Quiz/Quiz.js'
+import Quiz from './components/Quiz/QuizBack.js/index.js'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import FoodNavbar from './components/UsedForAll/Navbar.js';
 
