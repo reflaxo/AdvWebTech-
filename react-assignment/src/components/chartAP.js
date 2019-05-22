@@ -102,15 +102,15 @@ class ChartAP extends Component {
     //Here starts our HTML, Javascript is marked with "{}" brackets.
     return (
       <div>
-   	<div class="container-fluid">
-		<div class="row">
+   	<div className="container-fluid">
+		<div className="row">
 
-			<div class="col">
-			  <div class="card shadow">
-				<div class="card-header">
-				  <h6 class="m-0 font-weight-bold text-primary">My Assignments Progress</h6>
+			<div className="col">
+			  <div className="card shadow">
+				<div className="card-header">
+				  <h6 className="m-0 font-weight-bold text-primary">My Assignments Progress</h6>
 				</div>
-				<div class="card-body">
+				<div className="card-body">
         <canvas
                     id="Assignment Progress"
                     ref={this.chartRef}
@@ -121,8 +121,8 @@ class ChartAP extends Component {
 		</div>
 	</div>
 	
-	<div class="container-fluid">
-		<div class="row">
+	<div className="container-fluid">
+		<div className="row">
       </div>
       </div>
       </div>

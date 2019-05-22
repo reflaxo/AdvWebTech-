@@ -4,6 +4,7 @@ import {
     Button,
     Modal
    } from "react-bootstrap";
+   
 //Small JSX Component exporting a button that changes looks when it's clicked
 class UserModal extends Component {
   //Constructor for defining start settings in this.state and binding functions
@@ -20,16 +21,19 @@ constructor(props, context) {
       age: 100,
       gender: "d",
       studyGroup: "NEC",
-      show: false,
+      show: true,
+      path: ""
     };
   }
 
-  componentDidMount(){
-
-    if (this.props.show === true) {
-      this.setState({ show: true});
-    } else {
-      this.setState({ show: false});
+  //Send state data after mounting to parent
+  componentDidMount(){ 
+    this.setState({ path: this.props.path});
+    console.log("UserModelMounted" + this.props.path);
+    const { callbackFromParent} = this.props;
+    var newUserInfo = this.state;
+    if (callbackFromParent) {
+      callbackFromParent(newUserInfo);
     }
   }
 
@@ -45,31 +49,35 @@ constructor(props, context) {
   handleChange  = evt =>  {
 //Sets state depending on the targets name and value (flexible)
       this.setState({ [evt.target.name]: evt.target.value });
+     
   }
   
 //Sends a callback to our navbar on save (updates the text there)
   handleSave = event => {
     event.preventDefault();
 
-    console.log(this.state);
+    console.log("save" + this.state);
     var newUserInfo = this.state;
-    this.props.onNewUserInfo(newUserInfo);            
+    const { callbackFromParent} = this.props;
 
+    if (callbackFromParent) {
+      callbackFromParent(newUserInfo);
+    }
    }
   
     //Here is where our HTML-Markup is designed, in this case just our Edit Button
   render() {
 
-
     return (
       <div>
+      {this.state.path && this.state.path.includes('User') &&
 
         <Modal show={this.state.show} onHide={this.handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>Modal heading</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <Form>
+    <Form>
   <Form.Group controlId="NameID">
     <Form.Label>Name</Form.Label>
     <Form.Control name="name" value={this.state.value} type="name"  onChange={this.handleChange.bind(this)} placeholder="Enter name" />
@@ -107,7 +115,7 @@ constructor(props, context) {
             </Button>
           </Modal.Footer>
         </Modal>   
-
+}
       </div>
     );
   }
