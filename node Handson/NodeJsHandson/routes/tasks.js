@@ -1,7 +1,6 @@
 /* 1.2 Create a New Path document*/
 var express = require('express');
 var router = express.Router();
-var mongo = require('mongodb');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {

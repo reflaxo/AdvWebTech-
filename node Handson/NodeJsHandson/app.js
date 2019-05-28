@@ -19,6 +19,14 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 var Students = require('./models/students.model');
 
+app.get('/ReadStudents', (req, res) => {
+	// --------------------- Task 6.1 Start --------------------- 
+	Students.find({}, function(err, items) {
+	   res.send(items);
+	});
+	// --------------------- Task 6.1 End ----------------------- 
+});
+
 app.get('/', (req, res) => res.sendFile('resources/Dashboard.html', {root: __dirname}));
 
 
