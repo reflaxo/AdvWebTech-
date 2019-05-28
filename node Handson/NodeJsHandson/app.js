@@ -4,13 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var app = express();
+const mongoose = require('mongoose');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-//Task 1.2: Put link to new File here:
-var tasksRouter = require('./routes/tasks');
+//--------------------- Task 1.2: Put link to new routefile here:--------------------- 
+var TaskRouter = require('./routes/tasks');
 
 //Task 2.1: Set Up the Database
-const mongoose = require('mongoose');
+
 var mongoURL = 'mongodb://localhost:27017/hands-on';
 mongoose.Promise = global.Promise;
 mongoose.connect(mongoURL, { useNewUrlParser: true });
@@ -44,7 +45,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-//Tasks 1.2. : Put new Path here:
+
+//-----------Tasks 1.2. : Put new Path here:--------------------- 
 app.use('/tasks', tasksRouter);
 
 // catch 404 and forward to error handler

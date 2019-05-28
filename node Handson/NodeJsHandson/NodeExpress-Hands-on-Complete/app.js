@@ -5,13 +5,10 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 //Import Routers
-//========= Task 1.3 Start ====================
+var IndexRouter = require('./routes/');
+//========= Task 1.2.1 Start ====================
 var TaskRouter = require('./routes/tasks');
-//========= Task 1.3 End ======================
-//Mount Routers
-//========= Task 1.5 Start ====================
-app.use('/', TaskRouter);
-//========= Task 1.5 End ======================
+//========= Task 1.2.1 End ======================
 
 var app = express();
 
@@ -20,13 +17,11 @@ var app = express();
 //Import the mongoose module
 //========= Task 2.1 Start ====================
 var mongoose = require('mongoose');
-//========= Task 2.1 End ======================
 
 //Set up default mongoose connection
-//========= Task 2.4 Start ====================
 var mongoDB  = 'mongodb://localhost:27017/TaskDB'
 mongoose.connect(mongoDB);
-//========= Task 2.4 End ======================
+//========= Task 2.1 End ======================
 
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
@@ -47,7 +42,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+//Mount Routers
+app.use('/', IndexRouter);
+//========= Task 1.2.2 Start ====================
+app.use('/task', TaskRouter);
+//========= Task 1.2.2 End ======================
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
