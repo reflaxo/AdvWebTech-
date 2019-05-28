@@ -7,7 +7,7 @@ var logger = require('morgan');
 //Import Routers
 var IndexRouter = require('./routes/');
 //========= Task 1.2.1 Start ====================
-var TaskRouter = require('./routes/tasks');
+
 //========= Task 1.2.1 End ======================
 
 var app = express();
@@ -45,7 +45,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //Mount Routers
 app.use('/', IndexRouter);
 //========= Task 1.2.2 Start ====================
-app.use('/task', TaskRouter);
+
 //========= Task 1.2.2 End ======================
 
 // catch 404 and forward to error handler
