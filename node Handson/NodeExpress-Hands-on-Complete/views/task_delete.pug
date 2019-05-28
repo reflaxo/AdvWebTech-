@@ -1,0 +1,15 @@
+extends layout
+block content
+
+  h1 #{title}: 
+  #{task.allData}
+  p= task.lifespan
+ 
+    p Do you really want to delete this Task?
+
+    form(method='POST' action='')
+        div.form-group
+        input#taskid.form-control(type='hidden',name='taskid', required='true', value=task._id )
+
+        button.btn.btn-primary(type='submit') Delete
+        
