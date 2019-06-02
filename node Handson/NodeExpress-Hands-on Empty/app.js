@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 //Import Routers
 var IndexRouter = require('./routes/');
+var UsersRouter = require('./routes/users');
 //========= Task 1.2.1 Start ====================
 
 //========= Task 1.2.1 End ======================
@@ -44,6 +45,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Mount Routers
 app.use('/', IndexRouter);
+app.use('/users', UserRouter);
 //========= Task 1.2.2 Start ====================
 
 //========= Task 1.2.2 End ======================
