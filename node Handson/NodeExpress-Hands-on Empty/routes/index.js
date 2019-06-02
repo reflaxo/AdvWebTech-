@@ -8,4 +8,5 @@ router.get('/', function(req, res, next) {
 
 /* Task 1.1 Render Index with another path and title*/
 
+
 module.exports = router;

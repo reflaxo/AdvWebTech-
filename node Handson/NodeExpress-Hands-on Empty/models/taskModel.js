@@ -31,5 +31,4 @@ TaskSchema
 
 //Export model
 //========= Task 3.1 - Export model====================
-module.exports = mongoose.model('Task', TaskSchema);
 
