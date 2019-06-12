@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-//Import Routers
+//Import Routers (Examples for Task 1.2.1)
 var IndexRouter = require('./routes/');
 var UsersRouter = require('./routes/users');
 //========= Task 1.2.1 Start ====================
@@ -43,7 +43,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//Mount Routers
+//Mount Routers (Examples for Task 1.2.2)
 app.use('/', IndexRouter);
 app.use('/users', UserRouter);
 //========= Task 1.2.2 Start ====================

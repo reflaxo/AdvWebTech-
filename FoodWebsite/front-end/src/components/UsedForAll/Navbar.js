@@ -12,7 +12,7 @@ import {
   DropdownMenu,
   DropdownItem } from 'reactstrap';
   import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Quiz from "../Quiz/QuizBack.js/index.js";
+import QuizApp from "../Quiz/QuizApp.js";
 import About from "../About/About.js";
 import Recipe from "../Recipe/Recipe.js";
 
@@ -75,7 +75,7 @@ export default class FoodNavbar extends React.Component {
         <Route path="/" exact component={Recipe} />
         <Route path="/about/" component={About} />
         <Route path="/recipe/" component={Recipe} />
-        <Route path="/quiz/" component={Quiz} />
+        <Route path="/quiz" render={() => <QuizApp totalQuestions={10} />}/>
         </Router>
       </div>
     );

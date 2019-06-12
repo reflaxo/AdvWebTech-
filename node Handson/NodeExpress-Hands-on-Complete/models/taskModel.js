@@ -36,16 +36,15 @@ TaskSchemaExample
   '  Release Date:  '+ this.releaseDate.toDateString();
 });*/
 
-var Schema = mongoose.Schema;
 
-var MarvelSchema = new Schema(
-  {
-    superheroName: {type: String, required: true, max: 100},
-    strengthAsNumber: {type: Number, required: true, max: 1000},
-    birthDate: {type: Date, required: false},
-  }
-);
+// Virtual for author's URL
+TaskSchema
+.virtual('url')
+.get(function () {
+  return '/task/' + this._id;
+});
 
+//Export model
 //========= Task 3.1 - Export model====================
-module.exports = mongoose.model('Marvel', MarvelSchema);
+module.exports = mongoose.model('Task', TaskSchema);
 

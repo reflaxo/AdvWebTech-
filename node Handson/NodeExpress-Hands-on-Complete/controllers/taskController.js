@@ -1,7 +1,8 @@
 //Import the Task's model
 
 //Task 3.1 -  connect the model to the controller
-var Task = require('../models/taskModel')
+var Task = require('../models/taskModel');
+
 
 
 //Task 1.5 - write a controller for our "cool" Code
@@ -20,6 +21,8 @@ exports.task_list = function (req, res, next) {
             res.render('task_list', { title: 'Task List', task_list: list_tasks });
         })
 };
+
+
 
 // Handle Task create form on GET.
 exports.task_create_get = function(req, res) {
