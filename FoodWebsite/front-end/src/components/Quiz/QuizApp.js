@@ -104,6 +104,7 @@ class QuizApp extends Component {
         counter: counter,
         questionId: questionId,
         question: quizQuestions[counter].question,
+        image: quizQuestions[counter].image,
         answerOptions: quizQuestions[counter].answers,
         answer: ''
     });
@@ -130,6 +131,7 @@ class QuizApp extends Component {
     return (
       <Quiz
         answer={this.state.answer}
+        backgroundColor={this.state.backgroundColor}
         answerOptions={this.state.answerOptions}
         questionId={this.state.questionId}
         question={this.state.question}

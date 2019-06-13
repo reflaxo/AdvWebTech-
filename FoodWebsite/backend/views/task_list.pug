@@ -1,0 +1,11 @@
+extends layout
+block content
+  h1= title
+  // Connect the virtual allData so the data from the model gets displayed here
+  ul
+  each task in task_list
+    li #{task.allData},  
+    a(href=task.url+'/delete') Delete task
+
+  else
+    li There are no Tasks.
