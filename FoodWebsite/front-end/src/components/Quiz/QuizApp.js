@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import update from "react-addons-update";
-import quizQuestions from "./quizQuestions";
+//import quizQuestions from "./quizQuestions";
 import Quiz from "./Quiz";
 import axios from "axios";
 import Result from "./Result";
@@ -12,10 +12,11 @@ class QuizApp extends Component {
 
     this.state = {
       backgroundColor: "white",
-      food: [],
+      quizQuestions: [],
       counter: 0,
       questionId: 1,
       question: "",
+      name: "",
       answerOptions: [],
       answer: "",
       answersCount: {
@@ -42,14 +43,30 @@ class QuizApp extends Component {
       .catch(error => console.log(error));
   }*/
 
-  componentWillMount() {
-    const shuffledAnswerOptions = quizQuestions.map((question) => this.shuffleArray(question.answers));
+  componentDidMount() {
+    axios
+    .get("http://localhost:9000/getRecipes")
+    .then(res => {
+      const quiz = res.data;
+      this.setState({
+      quizQuestions:quiz,
+      question: quiz[0].question,
+      image:quiz[0].image,
+      recipe:quiz[0].recipe,
+      name:quiz[0].name,
+
+      })})
+    .catch(error => {
+      console.log(error.response);
+    });
+
+    /*const shuffledAnswerOptions = quizQuestions.map((question) => this.shuffleArray(question.answers));
     this.setState({
       question: quizQuestions[0].question,
       image:quizQuestions[0].image,
-      recipe:quizQuestions[0].recipe,
+      recipe:quizQuestions[0].recipe,*
       answerOptions: shuffledAnswerOptions[0]
-    });
+    });*/
   }
 
   shuffleArray(array) {
@@ -75,11 +92,11 @@ class QuizApp extends Component {
   handleAnswerSelected(event) {
     this.setUserAnswer(event.currentTarget.value);
 
-    if (quizQuestions[this.state.counter].question.type === "wrong") {
+    if (this.quizQuestions[this.state.counter].question.type === "wrong") {
       this.setState({
         backgroundColor: "red"
       });
-      if (this.state.questionId < quizQuestions.length) {
+      if (this.state.questionId < this.quizQuestions.length) {
         setTimeout(() => this.setNextQuestion(), 300);
       } else {
         setTimeout(() => this.setResults(this.getResults()), 300);
@@ -88,7 +105,7 @@ class QuizApp extends Component {
       this.setState({
         backgroundColor: "green"
       });
-      if (this.state.questionId < quizQuestions.length) {
+      if (this.state.questionId < this.quizQuestions.length) {
         setTimeout(() => this.setNextQuestion(), 300);
       } else {
         setTimeout(() => this.setResults(this.getResults()), 300);
@@ -114,10 +131,10 @@ class QuizApp extends Component {
     this.setState({
       counter: counter,
       questionId: questionId,
-      question: quizQuestions[counter].question,
-      image: quizQuestions[counter].image,
-      recipe: quizQuestions[counter].recipe,
-      answerOptions: quizQuestions[counter].answers,
+      question: this.quizQuestions[counter].question,
+      image: this.quizQuestions[counter].image,
+      recipe: this.quizQuestions[counter].recipe,
+      answerOptions: this.quizQuestions[counter].answers,
       answer: ""
     });
   }
@@ -149,7 +166,7 @@ class QuizApp extends Component {
         question={this.state.question}
         image={this.state.image}
         recipe={this.state.recipe}
-        questionTotal={quizQuestions.length}
+        questionTotal={this.state.quizQuestions.length}
         onAnswerSelected={this.handleAnswerSelected}
       />
     );

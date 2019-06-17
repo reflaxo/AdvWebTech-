@@ -63,7 +63,7 @@ exports.addRecipe = function(req, res) {
 exports.showRecipes = function(req, res, next) {
     Food.find((err, data) => {
         if (err) return res.json({ success: false, error: err });
-        return res.json({ success: true, data: data });
+        return res.json({ recipes: data });
       });
 
 
