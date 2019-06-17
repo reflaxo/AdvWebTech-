@@ -61,7 +61,8 @@ var quizQuestions = [
             type:  "Wrong",
             content: "Korea"
         }
-      ]
+      ],
+      recipe: "test test test",
   },
   {
     question: "Where is this Dish from? ",

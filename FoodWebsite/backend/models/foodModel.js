@@ -1,17 +1,12 @@
 var mongoose = require('mongoose');
 
-var mongoose = require('mongoose');
-
 var Schema = mongoose.Schema;
-
-var photoSchema = new Schema({
-
-  path:  { type: String },
-  caption: { type: String },
-  question: {type: String, required: false, max: 1000},
-    image: 
-      { data: Buffer, contentType: String },
-    answers: [{
+//Creates the Schema for our Database storage of the recipes data
+var foodSchema = new Schema({
+  name:{type: String,  max: 1000},
+  question: {type: String,  max: 10000},
+  image:  { data: Buffer, contentType: String },
+  answers: [{
       rightwrong: String,
       content: String
    },{
@@ -23,35 +18,13 @@ var photoSchema = new Schema({
   content: String
 }
   ],
-    recipe: {type: String, required: false, max: 100000},
+recipe: {type: String, required: false, max: 100000},
   }
   );
 
-module.exports = mongoose.model('Photos', photoSchema);
+module.exports = mongoose.model('Food', foodSchema);
 
 
-
-/*
-var foodSchema = new Schema(
-  {
-    question: {type: String, required: false, max: 1000},
-    image: 
-      { data: Buffer, contentType: String },
-    answers: [{
-      type: String,
-      content: String
-   },{
-    type: String,
-    content: String
- },
- {
-  type: String,
-  content: String
-}
-  ],
-    recipe: {type: String, required: false, max: 100000},
-  }
-);*/
 //========= Task 2.1 End ======================
 
 

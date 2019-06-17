@@ -1,29 +1,17 @@
-/* 1.2 - Create a New Path document*/
 var express = require('express');
 var router = express.Router();
-var multer = require('multer');
-/*Task 3.1 -  require the controller to connect it to the root file*/
 var foodControl = require('../controllers/foodController');
-/// Task ROUTES ///
-/* Task 1.2 - Render the Index File. 
-router.get('/', function(req, res, next) {
-  res.json({"foo": "bar"});
-  });
-  
 
-  
-  */
-
- router.post('/upload', foodControl.uploadPics);
- router.get('/', foodControl.showPics);
+//Route to upload pictures
+ router.post('/addRecipe', foodControl.addRecipe);
+ router.get('/addRecipe', foodControl.addRecipe);
+ router.post('/update/:id', foodControl.updateRecipe);
+ //Route to Show pictures
+ router.get('/getRecipes', foodControl.showRecipes);
+  //Test
  router.get('/text',function(req, res, next) {
-  res.send('API is working properly');});
+res.send('API is working properly');});
 
-
-/** Upload file to path and add record to database */
-
-
-/*Task 3.2 - Create the routes to the functions you find in the controller*/
 
 // GET request for creating a task. NOTE This must come before route for id (i.e. display tasks).
 router.get('/create', foodControl.foodCreateGet);

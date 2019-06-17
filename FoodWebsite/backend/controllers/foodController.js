@@ -4,7 +4,7 @@ var multer = require('multer');
 var Food = require('../models/foodModel');
 var upload    = require('./upload');
 var mongoose  = require('mongoose');
-var Photo     = mongoose.model('Photos');
+var Food     = mongoose.model('Food');
 
 
 
@@ -25,64 +25,75 @@ exports.foodList = function (req, res, next) {
         })
 };
 
-exports.uploadPics = function(req, res) {
+exports.addRecipe = function(req, res) {
 
-    upload(req, res,(error) => {
-        if(error){
-           res.redirect('/?msg=3');
-        }else{
-          if(req.file == undefined){
-            
-            res.redirect('/?msg=2');
-  
-          }else{
-               
-              /**
-               * Create new record in mongoDB
-               */
-              var fullPath = "files/"+req.file.filename;
+    var newFoodEntry= {
+        name: req.body.name,
+        image: { data: req.body.image, contentType: req.body.title },
+        question: "Where is this food from?",
+        answers: [{
+            rightwrong: req.body.answers[0],
+            content: "Korea",
+         }, {
+            rightwrong: req.body.answers[1],
+            content: "Iran",
+         },
+         {
+            rightwrong: req.body.answers[2],
+            content: "Germany"
+         }],
+        recipe: req.body.recipe
+      };
 
-              var document = {
-                path:     fullPath, 
-                caption:   req.body.caption,
-                question: req.body.question,
-                answers: [{
-                    rightwrong: req.body.type1,
-                    content: req.body.content1,
-                 }, {
-                    rightwrong: req.body.type2,
-                    content: req.body.content2,
-                 },
-                 {
-                    rightwrong: req.body.type3,
-                    content: req.body.content3
-                 }],
-                recipe: req.body.recipe
-              };
-    
-            var photo = new Photo(document); 
-            photo.save(function(error){
-              if(error){ 
-                console.log(error);
-                throw error;
-               
-              } 
-              res.redirect('/?msg=1');
-           });
-        }
-      }
-      });};
+      newFoodEntry.image.contentType='image/png';
+    var food = new Food(newFoodEntry); 
+    food.save(function(error){
+      if(error){ 
+        console.log("There was an error server side" + error);
+        throw error;
+       
+      } 
+
+      res.redirect('/?msg=1');
+    });
+};
  
+  
 
-exports.showPics = function(req, res, next) {
+exports.showRecipes = function(req, res, next) {
+    Food.find((err, data) => {
+        if (err) return res.json({ success: false, error: err });
+        return res.json({ success: true, data: data });
+      });
 
+
+};
+
+    exports.updateRecipe = function(req, res) {
+        Food.findById(req.params.id, function(err, food) {
+            if (!food)
+                res.status(404).send("data is not found");
+            else
+                food.question = "Where is this food from?";
+                food.answers = req.body.answers;
+                food.recipe = req.body.recipe;
+                food.image = req.body.image;
+                food.save().then(food => {
+                    res.json('food updated!');
+                })
+                .catch(err => {
+                    res.status(400).send("Update not possible");
+                });
+        }); 
+/*
         Photo.find({}, ['path','caption', 'question'], {sort:{ _id: -1} }, function(err, photos) {
-          res.render('index', { title: 'NodeJS file upload tutorial', msg:req.query.msg, photolist : photos });
-          
+          res.render('index', { title: 'NodeJS file upload tutorial', msg:req.query.msg, photolist : photos }); 
+        
+        
         });
 
 
-    /*
+
     Image.findOne({_id: req.params.id}, (err, image) => {
       if (err) return res.sendStatus(404);
       fs.createReadStream(path.resolve(UPLOAD_PATH, image.filename)).pipe(res)});*/

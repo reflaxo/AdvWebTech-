@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
  
-import Question from './Question';
+import QuizImage from './QuizImage';
 import QuestionCount from './QuestionCount';
 import AnswerOption from './AnswerOption';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -38,7 +38,8 @@ function Quiz(props) {
 			 		counter={props.questionId}
 			 		total={props.questionTotal}
 			  	/>
-			  	<Question content={props.question} image={props.image} />
+			  	<QuizImage  image={props.image} recipe={props.recipe} />
+				  <h3>Where is this dish from?</h3>
 			  	<ul className="answerOptions">
 			  		{props.answerOptions.map(renderAnswerOptions)}
 			  	</ul>

@@ -25,14 +25,6 @@ class App extends Component {
     this.state = { apiResponse:[] , objToArr:[]};
 }
 
-callAPI() {
-  fetch("http://localhost:9000/")
-      .then(res => res.text())
-      .then(res => this.setState({ apiResponse: res }));
-}
-componentWillMount() {
-    this.callAPI();
-}
 
   render() {
 
@@ -49,9 +41,6 @@ componentWillMount() {
       <body>
 
       <div>
-      <p className="App-intro">;{this.state.apiResponse}</p>
-     
-     
       </div>
       </body>
     </div>
