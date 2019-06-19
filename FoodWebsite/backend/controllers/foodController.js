@@ -2,11 +2,10 @@
 var multer = require('multer');
 //Task 3.1 -  connect the model to the controller
 var Food = require('../models/foodModel');
-var upload    = require('./upload');
 var mongoose  = require('mongoose');
 var Food     = mongoose.model('Food');
-
-
+//const upload = multer({ storage: storage });
+fs = require('fs');
 
 //Task 1.5 - write a controller for our "cool" Code
 exports.simple_task = function(req, res) {
@@ -14,22 +13,16 @@ exports.simple_task = function(req, res) {
 
 };
 
-// Display list of all Task.
-exports.foodList = function (req, res, next) {
-// Task 3.2 Render the Task form in the controller
-    Food.find()
-        .exec(function (err, list_tasks) {
-            if (err) { return next(err); }
-            // Successful, so render.
-            res.render('task_list', { title: 'Task List', task_list: list_tasks });
-        })
-};
-
 exports.addRecipe = function(req, res) {
+ // Convert to Base64 and print out a bit to show it's a string
+ let base64 = data.toString('base64');
+ console.log(base64.substr(0,200));
+
+ // Feed out string to a buffer and then put it in the database
 
     var newFoodEntry= {
         name: req.body.name,
-        image: { data: req.body.image, contentType: req.body.title },
+        image: { data: (fs.readFileSync(req.body.image)).toString, contentType: 'image/png' },
         question: "Where is this food from?",
         answers: [{
             rightwrong: req.body.answers[0],
@@ -45,6 +38,8 @@ exports.addRecipe = function(req, res) {
         recipe: req.body.recipe
       };
 
+
+
       newFoodEntry.image.contentType='image/png';
     var food = new Food(newFoodEntry); 
     food.save(function(error){
@@ -52,10 +47,13 @@ exports.addRecipe = function(req, res) {
         console.log("There was an error server side" + error);
         throw error;
        
-      } 
+      } });
 
-      res.redirect('/?msg=1');
-    });
+
+     
+
+      res.redirect('/recipe');
+
 };
  
   
@@ -63,11 +61,26 @@ exports.addRecipe = function(req, res) {
 exports.showRecipes = function(req, res, next) {
     Food.find((err, data) => {
         if (err) return res.json({ success: false, error: err });
-        return res.json({ recipes: data });
+        return res.json({ recipes: data,  });
       });
+
+      fs.writeFile('./output.png', recipes.image)
 
 
 };
+
+
+exports.deleteAllRecipes = function(req, res, next) {
+    Food.remove({}, function(err) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.end('success');
+            }
+        }
+    );
+};
+
 
     exports.updateRecipe = function(req, res) {
         Food.findById(req.params.id, function(err, food) {
@@ -84,26 +97,14 @@ exports.showRecipes = function(req, res, next) {
                 .catch(err => {
                     res.status(400).send("Update not possible");
                 });
-        }); 
-/*
-        Photo.find({}, ['path','caption', 'question'], {sort:{ _id: -1} }, function(err, photos) {
-          res.render('index', { title: 'NodeJS file upload tutorial', msg:req.query.msg, photolist : photos }); 
-        
-        
         });
 
-
-
-    Image.findOne({_id: req.params.id}, (err, image) => {
-      if (err) return res.sendStatus(404);
-      fs.createReadStream(path.resolve(UPLOAD_PATH, image.filename)).pipe(res)});*/
+  
+    
     };
 
-exports.insertImage = '/api/photo', function(req,res){
-    var newItem = new Item();
-    newItem.img.data = fs.readFileSync(req.files.userPhoto.path);
-    newItem.img.contentType = 'image/png';
-    newItem.save();}
+
+
 
 // Handle Task create form on GET.
 exports.foodCreateGet = function(req, res) {
@@ -145,12 +146,12 @@ exports.foodDeleteGet = function(req, res, next) {
         })
 };
 
-// Handle Task delete on POST.
+/* Handle Task delete on POST.
 exports.foodDeletePost = function(req, res, next) {
 
     Task.findByIdAndRemove(req.body.taskid,function (err) {
         if (err) { return next(err); }
         // Successful - redirect to new task record.
         res.redirect('/food');
-    })
-};
+    });
+};*/

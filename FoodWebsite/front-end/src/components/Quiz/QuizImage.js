@@ -1,47 +1,61 @@
-
-import React, { Component } from "react";
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import defaultPic from '../Images/defaultPic.png';
-import './quiz.css';
 
 
-  class QuizImage extends Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			hover: false
-		};
-		this.toggleHover= this.toggleHover.bind(this);
+
+class QuizImage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+	  hover: false,
+	  imageString:''
 	}
 	
-	toggleHover() {
-		this.setState({hover: !this.state.hover});
-	}
-//Imports the correct picture if available, else renders the defaultPicture
-render(){
-
-  
-      
-	return (
-		<div>
-		{this.props.image? 
-
-			<div>
-		
-			
-			<div><img  className="quizImage" src={this.props.image} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover} alt="img" /></div>
-			{this.state.hover && <div>{this.props.recipe}</div>}
-	
-			</div>: 
-			<div><img className="quizImage" src={defaultPic}  alt="img" /></div>
-			
-		
-		}
-		</div>
-		);
-} 
+	this.toggleHover = this.toggleHover.bind(this);
+	this.arrayBufferToBase64 = this.arrayBufferToBase64.bind(this);
   }
- 
-export default QuizImage;
+  componentDidMount() {
+	var imageTemp=this.arrayBufferToBase64(this.props.image);
+	this.setState({ imageString: imageTemp });
 
+  }
+
+  arrayBufferToBase64(buffer){
+    var binary = '';
+    var bytes = [].slice.call(new Uint8Array(buffer));
+    bytes.forEach((b) => binary += String.fromCharCode(b));
+    return window.btoa(binary);
+};
+
+  toggleHover() {
+    this.setState({ hover: !this.state.hover });
+  }
+  //Imports the correct picture if available, else renders the defaultPicture
+  render() {
+    return (
+      <div>
+        {this.props.image ? (
+          <div>
+            <div>
+              <img
+                className="quizImage"
+				src={`data:image/png;base64,${this.state.imageString}`}
+                onMouseEnter={this.toggleHover}
+                onMouseLeave={this.toggleHover}
+                alt="img"
+              />
+            </div>
+            {this.state.hover && <div>{this.props.recipe}</div>}
+          </div>
+        ) : (
+          <div>
+            <img className="quizImage" src={defaultPic} alt="img" />
+          </div>
+        )}
+      </div>
+    );
+  }
+}
+
+export default QuizImage;

@@ -1,72 +1,44 @@
-import React, { Component } from "react";
-import update from "react-addons-update";
+import React, { Component } from 'react';
+import update from 'react-addons-update';
 //import quizQuestions from "./quizQuestions";
-import Quiz from "./Quiz";
-import axios from "axios";
-import Result from "./Result";
-import "./quiz.css";
+import Quiz from './Quiz';
+import axios from 'axios';
+import Result from './Result';
+import './Quiz.css';
 
 class QuizApp extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      backgroundColor: "white",
+      backgroundColor: 'white',
       quizQuestions: [],
       counter: 0,
       questionId: 1,
-      question: "",
-      name: "",
-      answerOptions: [],
-      answer: "",
       answersCount: {
         Stark: 0,
         Lannister: 0,
         Targaryen: 0
       },
-      result: ""
+      result: ''
     };
 
     this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
   }
-/*
-  componentDidMount() {
-    var url = "http://localhost:9000/getRecipes/";
-    fetch(url)
-      .then(response => {
-        return response.json();
-      })
-      .then(d => {
-        this.setState({ food: d.data });
-        console.log("state", this.state.food);
-      })
-      .catch(error => console.log(error));
-  }*/
 
   componentDidMount() {
     axios
-    .get("http://localhost:9000/getRecipes")
-    .then(res => {
-      const quiz = res.data;
-      this.setState({
-      quizQuestions:quiz,
-      question: quiz[0].question,
-      image:quiz[0].image,
-      recipe:quiz[0].recipe,
-      name:quiz[0].name,
-
-      })})
-    .catch(error => {
-      console.log(error.response);
-    });
-
-    /*const shuffledAnswerOptions = quizQuestions.map((question) => this.shuffleArray(question.answers));
-    this.setState({
-      question: quizQuestions[0].question,
-      image:quizQuestions[0].image,
-      recipe:quizQuestions[0].recipe,*
-      answerOptions: shuffledAnswerOptions[0]
-    });*/
+      .get('http://localhost:9000/getRecipes')
+      .then(res => {
+        const recipes = res.data.recipes;
+        const shuffledRecipes = this.shuffleArray(recipes);
+        this.setState({
+          quizQuestions: shuffledRecipes,
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   shuffleArray(array) {
@@ -92,20 +64,23 @@ class QuizApp extends Component {
   handleAnswerSelected(event) {
     this.setUserAnswer(event.currentTarget.value);
 
-    if (this.quizQuestions[this.state.counter].question.type === "wrong") {
+    if (
+      this.state.quizQuestions[this.state.counter].question.rightwrong ===
+      'false'
+    ) {
       this.setState({
-        backgroundColor: "red"
+        backgroundColor: 'red'
       });
-      if (this.state.questionId < this.quizQuestions.length) {
+      if (this.state.questionId < this.state.quizQuestions.length) {
         setTimeout(() => this.setNextQuestion(), 300);
       } else {
         setTimeout(() => this.setResults(this.getResults()), 300);
       }
     } else {
       this.setState({
-        backgroundColor: "green"
+        backgroundColor: 'green'
       });
-      if (this.state.questionId < this.quizQuestions.length) {
+      if (this.state.questionId < this.state.quizQuestions.length) {
         setTimeout(() => this.setNextQuestion(), 300);
       } else {
         setTimeout(() => this.setResults(this.getResults()), 300);
@@ -125,18 +100,11 @@ class QuizApp extends Component {
   }
 
   setNextQuestion() {
-    const counter = this.state.counter + 1;
-    const questionId = this.state.questionId + 1;
-
-    this.setState({
-      counter: counter,
-      questionId: questionId,
-      question: this.quizQuestions[counter].question,
-      image: this.quizQuestions[counter].image,
-      recipe: this.quizQuestions[counter].recipe,
-      answerOptions: this.quizQuestions[counter].answers,
-      answer: ""
-    });
+    this.setState(prevState => ({
+      counter: prevState.counter +1,
+      questionId: prevState.questionId +1 ,
+      answer: ''
+    }));
   }
 
   getResults() {
@@ -152,20 +120,26 @@ class QuizApp extends Component {
     if (result.length === 1) {
       this.setState({ result: result[0] });
     } else {
-      this.setState({ result: "Undetermined" });
+      this.setState({ result: 'Undetermined' });
     }
   }
 
   renderQuiz() {
+    const quizQuestions = this.state.quizQuestions;
+    if (quizQuestions.length === 0) return null;
+
+    const counter = this.state.counter;
+    const currentQuestion = quizQuestions[counter];
+
     return (
       <Quiz
-        answer={this.state.answer}
+        answer={currentQuestion.answer}
         backgroundColor={this.state.backgroundColor}
-        answerOptions={this.state.answerOptions}
+        answerOptions={currentQuestion.answers}
         questionId={this.state.questionId}
-        question={this.state.question}
-        image={this.state.image}
-        recipe={this.state.recipe}
+        question={currentQuestion.question}
+        image={currentQuestion.image}
+        recipe={currentQuestion.recipe}
         questionTotal={this.state.quizQuestions.length}
         onAnswerSelected={this.handleAnswerSelected}
       />

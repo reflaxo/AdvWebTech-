@@ -81,6 +81,13 @@ router.post("/putData", (req, res) => {
     return res.json({ success: true });
   });
 });
+//Fileupload storage
+
+const storage = multer.diskStorage({
+    destination: function (req, res, cb) {
+        cb(null, 'uploads/')
+    }})
+
 
 // append /api for our http requests
 app.use("/api", router);

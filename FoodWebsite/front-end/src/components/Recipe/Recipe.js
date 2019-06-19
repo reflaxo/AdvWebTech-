@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
 import NewRecipe from "./NewRecipe";
+import DeleteAll from "./DeleteAll";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 //Small JSX Component exporting a button that changes looks when it's clicked
@@ -17,20 +18,22 @@ class Recipe extends Component {
     //We want our Edit button to show "off"/false
     this.state = {
       addRecipe: false,
-      food:""
+      recipes: ""
     };
   }
   
     componentDidMount() {
-      axios.get('http://localhost:9000/getRecipes/')
-          .then(data=> {
-              this.setState({ food: data}) ;  
-           
-           console.log(this.state.food) ;  
-          })
-          .catch(function (error){
-              console.log(error);
-          })
+      axios
+      .get('http://localhost:9000/getRecipes')
+      .then(res => {
+        const recipesdata = res.data.recipes;
+        this.setState({
+          recipes: recipesdata,
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
   
 
@@ -53,7 +56,8 @@ class Recipe extends Component {
             <div>
             <p>Recipe</p>
         <Button color="info" onClick={this.addRecipe}>+
-        </Button>
+        </Button>   <DeleteAll/>
+     
         <NewRecipe addRecipe={addRecipe}/>
      
                 {
@@ -67,7 +71,7 @@ class Recipe extends Component {
         );
     }
       return (<div>   <Button color="info" onClick={this.addRecipe}>+
-      </Button>
+      </Button>   <DeleteAll/>
       <NewRecipe addRecipe={addRecipe}/></div>)
       
  
