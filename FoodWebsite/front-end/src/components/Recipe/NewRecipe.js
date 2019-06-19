@@ -20,7 +20,10 @@ class NewRecipe extends Component {
       answers: ["false", "false", "false"],
       recipe: "",
       name: "",
-      image: ""
+      image: "",
+      recipes:"",
+      foodType:"",
+      country:""
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.handleAnswersChange = this.handleAnswersChange.bind(this);
@@ -30,14 +33,19 @@ class NewRecipe extends Component {
   }
 
   componentDidMount() {
-    this.callAPI();
+    axios
+    .get('http://localhost:9000/getRecipes')
+    .then(res => {
+      const recipeData = res.data.recipes;
+      this.setState({
+        recipes: recipeData,
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
   }
 
-  callAPI() {
-    fetch("http://localhost:9000/getRecipes")
-      .then(res => res.text())
-      .then(res => this.setState({ apiResponse: res }));
-  }
 
   handleAnswersChange(answer) {
     return e => {
@@ -45,7 +53,7 @@ class NewRecipe extends Component {
       this.setState(prevState => {
         const newAnswers = [...prevState.answers];
         newAnswers[answer] = value;
-        console.log('stelle', answer, 'val', newAnswers)
+        console.log('stelle', answer, 'val', newAnswers);
         return ({
           answers: newAnswers
         });
@@ -90,7 +98,8 @@ class NewRecipe extends Component {
       question: "",
       answers: ["false", "false", "false"],
       recipe: "",
-      image: ""
+      image: "",
+      foodType:""
     });
   }
 
@@ -98,9 +107,8 @@ class NewRecipe extends Component {
   render() {
     //The value of isEditing is called from the state
     const { addRecipe } = this.props;
-    //Our text is called with this.props;
-    //const{text}= this.props.text;
-    //Here starts our HTML, Javascript is marked with "{}" brackets.
+//Cara: Idea! Replace Answers field with which country - then i change in quiz that if country was chosen, its the correct answer :)
+// Add dropdown for foodType: "Desert/Main/etc... what you want"
     return (
       <div>
         {addRecipe ? (
