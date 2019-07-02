@@ -57,28 +57,14 @@
     width: 200;
   }
 
-  .hover {
-    position: relative;
-  
-    &:hover &__no-hover {
-      opacity: 0;
-    }
-  
-    &:hover &__hover {
-      opacity: 1;
-    }
-  
-    &__hover {
-      position: absolute;
-      top: 0;
-      opacity: 0;
-    }
-  
-    &__no-hover {
-      opacity: 1;
-    }
-  }
-   
+  .hover-button .hover-button--on,
+.hover-button:hover .hover-button--off {
+  display: none;
+}
+
+.hover-button:hover .hover-button--on {
+  display: inline;
+}
   /* AnswerOption Component */
   .answerOption {
     border-top: 1px solid #eee;

@@ -21,8 +21,12 @@ var app = express();
 var mongoose = require('mongoose');
 
 //Set up default mongoose connection
-var mongoDB  = 'mongodb://localhost:27017/TaskDB'
-mongoose.connect(mongoDB);
+var mongoDB  = 'mongodb://localhost:27017/food';
+mongoose.connect(mongoDB).then(() => {
+console.log("Connected to Database");
+}).catch((err) => {
+    console.log("Not Connected to Database ERROR! ", err);
+});
 //========= Task 2.1 End ======================
 
 // Get Mongoose to use the global promise library
@@ -44,7 +48,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 
 //Mount Routers

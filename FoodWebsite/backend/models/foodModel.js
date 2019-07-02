@@ -9,19 +9,7 @@ var foodSchema = new Schema({
   image:  { data: Buffer, contentType: String },
   foodType:{type: String,  max: 100},
   Country: {type: String,  max: 100},
-  answers: [{
-      rightwrong: String,
-      content: String
-   },{
-    rightwrong: String,
-    content: String
- },
- {
-  rightwrong: String,
-  content: String
-}
-  ],
-recipe: {type: String, required: false, max: 100000},
+  recipe: {type: String, required: false, max: 100000},
   }
   );
 
