@@ -8,7 +8,8 @@ var foodSchema = new Schema({
   question: {type: String,  max: 10000},
   image:  { data: Buffer, contentType: String },
   foodType:{type: String,  max: 100},
-  Country: {type: String,  max: 100},
+  country: {type: String,  max: 100},
+  ingridients: {type: String,  max: 1000},
   recipe: {type: String, required: false, max: 100000},
   }
   );

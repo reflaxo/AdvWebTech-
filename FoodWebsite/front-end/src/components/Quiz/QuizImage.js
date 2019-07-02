@@ -16,12 +16,11 @@ class QuizImage extends Component {
 	this.arrayBufferToBase64 = this.arrayBufferToBase64.bind(this);
   }
   componentDidMount() {
+    //If there is an image it will transform the image to a picture
     if (this.props.image) {
       const imageTemp=this.arrayBufferToBase64(this.props.image.data.data);
       this.setState({ imageString: imageTemp });
-    console.log("Stringify" + JSON.stringify(this.props.image.data.data));
-      console.log("Props" + this.props.image);
-      console.log("Base64" + imageTemp);
+
     }
 
 

@@ -22,6 +22,7 @@ class NewRecipe extends Component {
       name: "",
       file: null,
       recipes:"",
+      ingridients:"",
       foodType:"",
       country:""
     };
@@ -31,6 +32,7 @@ class NewRecipe extends Component {
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleRecipeChange = this.handleRecipeChange.bind(this);
+    this.handleIngridientsChange = this.handleIngridientsChange.bind(this);
   }
 
   componentDidMount() {
@@ -58,17 +60,6 @@ class NewRecipe extends Component {
     this.setState({
       country: e.target.value
     });
-    /*return e => {
-      const value = e.target.value;
-      this.setState(prevState => {
-        const newAnswers = [...prevState.answers];
-        newAnswers[answer] = value;
-        console.log('stelle', answer, 'val', newAnswers);
-        return ({
-          answers: newAnswers
-        });
-      });
-    };*/
   }
 
   handleImageChange(e) {
@@ -85,6 +76,11 @@ class NewRecipe extends Component {
       recipe: e.target.value
     });
   }
+  handleIngridientsChange(e) {
+    this.setState({
+      ingridients: e.target.value
+    });
+  }
 
   
 
@@ -94,6 +90,7 @@ class NewRecipe extends Component {
       e.preventDefault();
       const formData = new FormData();
       formData.append('name',this.state.name);
+      formData.append('ingridients',this.state.ingridients);
       formData.append('recipe',this.state.recipe);
       formData.append('country',this.state.country);
       formData.append('foodType',this.state.foodType);
@@ -141,20 +138,20 @@ class NewRecipe extends Component {
           <legend>Country</legend>
           <FormGroup check>
             <Label check>
-              <Input type="radio" onChange={this.handleCountryChange} name="radio1" value={this.state.country}/>{'Iran'}
-              Iran
+              <Input type="radio" onChange={this.handleCountryChange} name="radio1" value="Iran" checked={this.state.country === 'Iran'}/>{'Iran'}
+       
             </Label>
           </FormGroup>
           <FormGroup check>
             <Label check>
-              <Input type="radio" name="radio1" />{'Korea'}
-              Korea
+              <Input type="radio" onChange={this.handleCountryChange} value="Korea" name="radio1" checked={this.state.country === 'Korea'}/>{'Korea'}
+ 
             </Label>
           </FormGroup>
           <FormGroup check disabled>
             <Label check>
-              <Input type="radio" name="radio1" />{'Germany '}
-              Germany
+              <Input type="radio" name="radio1" onChange={this.handleCountryChange} value="Germany" checked={this.state.country === 'Germany'}/>{'Germany '}
+
             </Label>
           </FormGroup>
 
@@ -167,6 +164,16 @@ class NewRecipe extends Component {
           </Input>
         </FormGroup>
         </FormGroup>
+        <FormGroup>
+                  <Label for="ingridients">Ingridients</Label>
+                  <Input
+                    value={this.state.ingridients}
+                    onChange={this.handleIngridientsChange}
+                    type="textarea"
+                    name="ingr"
+                    id="ingridients"
+                  />
+                </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">Recipe</Label>
                   <Input

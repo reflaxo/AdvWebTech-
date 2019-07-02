@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
- 
+import QuizImage from "./QuizImage";
+
 function Result(props) {
 	return (
 		<ReactCSSTransitionGroup
@@ -14,7 +15,26 @@ function Result(props) {
 			transitionAppearTimeout={500}
 		>
 			<div>
-				You prefer <strong>{props.quizResult} Food</strong>!
+				You had <strong>{props.quizResult} correct Answers</strong>!
+
+				The following recipes appeared in your Quiz:
+				<ul>
+				{
+                  props.recipes.map((recipe =>
+                    <div>
+							<li>  <QuizImage image={recipe.image} name={recipe.name}/>
+							{recipe.name}</li>
+			
+                     </div>
+                    ))
+                }
+			
+				
+				
+
+
+				</ul>
+
 			</div>
 		</ReactCSSTransitionGroup>
 	);

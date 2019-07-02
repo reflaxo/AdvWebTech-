@@ -59,22 +59,25 @@ class Recipe extends Component {
             <p>Recipe</p>
         <Button color="info" onClick={this.addRecipe}>+
         </Button>   <DeleteAll/>
+
+        {
+                  this.state.recipes.map((recipe =>
+                    <div><th k>
+                        {recipe.name} {recipe.country}
+                     
+                    </th>
+                    <RecipeImage image={recipe.image} name={recipe.name} recipe={recipe.recipe}/>
+                    {recipe.country}
+                     </div>
+                    ))
+                }
         
-        {this.state.recipes.map(function(recipe, i){
-  console.log('test');
-  return   <RecipeImage image={recipe.image} name={recipe.name}/> 
-})}
+ 
       
      
         <NewRecipe addRecipe={addRecipe}/>
      
-                {
-                  this.state.recipes.map((recipe =>
-                    <th key="">
-                        {recipe.name}
-                    </th>
-                    ))
-                }
+      
             </div>
         );
     }

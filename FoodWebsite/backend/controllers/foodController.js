@@ -21,37 +21,31 @@ const upload = multer({
   limits: { fileSize: 1000000 }
 }).single("myImage");
 
-//Task 1.5 - write a controller for our "cool" Code
-exports.simple_task = function(req, res) {
-  res.render("simple_task", {
-    task: "Washing dishes",
-    effort: "30 minutes",
-    deadline: "today"
-  });
-};
-
-
-
 exports.addRecipe = function(req, res) {
-
   upload(req, res, err => {
-    var img = fs.readFileSync(req.file.path);
-    var encode_image = img.toString('base64');
-  
+    if (req.file.path) {
+      var img = fs.readFileSync(req.file.path);
+      var encode_image = img.toString("base64");
+    } else {
+      var encode_image = "";
+    }
+
     console.log("Request ---", req.body);
-    console.log("Request file ---", req.file); //Here you get file.
-    /*Now do where ever you want to do*/
+    console.log("Request file ---", req.file); 
 
     var newFoodEntry = {
       name: req.body.name,
-      image: {contentType: req.file.mimetype, data:  new Buffer(encode_image, 'base64')},
+      image: {
+        contentType: req.file.mimetype,
+        data: new Buffer(encode_image, "base64")
+      },
       question: "Where is this food from?",
       country: req.body.country,
+      ingridients: req.body.ingridients,
       foodType: req.body.foodType,
       recipe: req.body.recipe
     };
 
-    //newFoodEntry.image.contentType='image/png';
     var food = new Food(newFoodEntry);
     food.save(function(error) {
       if (error) {
@@ -59,7 +53,6 @@ exports.addRecipe = function(req, res) {
         throw error;
       }
     });
- 
   });
 };
 
@@ -68,10 +61,10 @@ exports.showRecipes = function(req, res, next) {
     if (err) return res.json({ success: false, error: err });
     return res.json({ recipes: data });
   });
-
-  //fs.writeFile('./output.png', recipes.image)
 };
 
+// this is our delete method
+// this method removes existing data in our database
 exports.deleteAllRecipes = function(req, res, next) {
   Food.remove({}, function(err) {
     if (err) {
@@ -79,6 +72,14 @@ exports.deleteAllRecipes = function(req, res, next) {
     } else {
       res.end("success");
     }
+  });
+};
+
+exports.deleteOneRecipe = function(req, res, next) {
+  const { id } = req.body;
+  Food.findOneAndDelete(id, err => {
+    if (err) return res.send(err);
+    return res.json({ success: true });
   });
 };
 
@@ -100,52 +101,3 @@ exports.updateRecipe = function(req, res) {
   });
 };
 
-// Handle Task create form on GET.
-exports.foodCreateGet = function(req, res) {
-  res.send("hi here you can create new recipes");
-};
-
-// Handle Task create on POST.
-exports.foodCreatePost = function(req, res, next) {
-  var food = new Food({
-    question: req.body.question,
-    image: req.body.image,
-    answers: req.body.answers,
-    recipe: req.body.recipe
-  });
-
-  //saving the Data in Database
-  task.save(function(err) {
-    if (err) {
-      return next(err);
-    }
-
-    // Successful - redirect to new task record.
-    res.redirect("/food/recipes");
-  });
-};
-
-// Display task delete form on GET.
-exports.foodDeleteGet = function(req, res, next) {
-  Food.findById(req.params.id).exec(function(err, task) {
-    if (err) {
-      return next(err);
-    }
-    if (food == null) {
-      // No results.
-      res.redirect("/food/recipes");
-    }
-    // Successful, so render.
-    res.render("foodDelete", { title: "Delete Recipe", task: task });
-  });
-};
-
-/* Handle Task delete on POST.
-exports.foodDeletePost = function(req, res, next) {
-
-    Task.findByIdAndRemove(req.body.taskid,function (err) {
-        if (err) { return next(err); }
-        // Successful - redirect to new task record.
-        res.redirect('/food');
-    });
-};*/

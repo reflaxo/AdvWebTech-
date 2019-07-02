@@ -3,21 +3,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
  
  
+
 function AnswerOption(props) {
+
+
+
 	return (
-		<li className="answerOption">
+		<li className="answerOption" style={{background: "green"}} >
 			<input
 				type="radio"
 				className="radioCustomButton"
 				name="radioGroup"
-				checked={props.answerType === props.answer}
-				id={props.answerType}
-				value={props.answerType}
+				checked={props.answerName === props.answer}
+				id={props.answerName}
+				value={props.answerName}
 				onChange={props.onAnswerSelected}
 			/>
  
-			<label className="radioCustomLabel" htmlFor={props.answerType}>
-				{props.answerContent}
+			<label className="radioCustomLabel" htmlFor={props.answerName}>
+				{props.answerName}
 			</label>
  
 		</li>
@@ -26,7 +30,6 @@ function AnswerOption(props) {
  
 AnswerOption.propTypes = {
 	answerType: PropTypes.string.isRequired,
-	answerContent: PropTypes.string.isRequired,
 	answer: PropTypes.string.isRequired,
 	OnAnswerSelected: PropTypes.string.isRequired,
  
