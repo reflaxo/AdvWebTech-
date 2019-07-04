@@ -11,11 +11,7 @@ class About extends Component {
     //You need to bind a function in the constructor to call it throughout the class
     this.onDelete = this.onDelete.bind(this);
 
-    //This is were our start settings are defined:
-    //We want our Edit button to show "off"/false
-    this.state = {
-      isEditing: false
-    };
+
   }
 
   onDelete(ev) {
@@ -23,7 +19,7 @@ class About extends Component {
     this.setState( () => ({ isEditing: !this.state.isEditing }));
 
     axios
-    .post("http://localhost:9000/deleteRecipe", food)
+    .post("http://localhost:9000/deleteRecipe")
     .then(res => console.log(res.food))
     .catch(error => {
       console.log(error.response);
@@ -31,15 +27,11 @@ class About extends Component {
   }
     //Here is where our HTML-Markup is designed, in this case just our Edit Button
   render() {
-    //The value of isEditing is called from the state
-    const { isEditing } = this.state;
-    //Our text is called with this.props;
-    //const{text}= this.props.text;
-    //Here starts our HTML, Javascript is marked with "{}" brackets.
+
     return (
       <div>
         <Button color="info" onClick={this.onDelete}>
-          {isEditing ? "Done Editing?" : "Edit"}
+         Delete
         </Button>
         <p>About</p>
       </div>

@@ -1,0 +1,35 @@
+:root {
+    --space: 1.5em 0;
+    --space: 2em 0;
+}
+p{
+    text-align: center;
+}
+.Site {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.Site-content {
+    flex: 1 0 auto;
+    padding: var(--space) var(--space) 0;
+    width: 100%;
+}
+
+.Site-content:after {
+    content: '\00a0';
+    display: block;
+    margin-top: var(--space);
+    height: 0;
+    visibility: hidden;
+}
+.footer {
+    text-align: center;
+    position: fixed;
+    padding: 10px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: lightyellow ;
+}

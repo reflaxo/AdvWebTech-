@@ -20,16 +20,19 @@ class NewRecipe extends Component {
       answers: ["false", "false", "false"],
       recipe: "",
       name: "",
-      image: "",
+      file: null,
       recipes:"",
+      ingridients:"",
       foodType:"",
       country:""
     };
     this.onSubmit = this.onSubmit.bind(this);
-    this.handleAnswersChange = this.handleAnswersChange.bind(this);
+    this.handleCountryChange = this.handleCountryChange.bind(this);
+    this.handleFoodTypeChange = this.handleFoodTypeChange.bind(this);
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleRecipeChange = this.handleRecipeChange.bind(this);
+    this.handleIngridientsChange = this.handleIngridientsChange.bind(this);
   }
 
   componentDidMount() {
@@ -47,24 +50,20 @@ class NewRecipe extends Component {
   }
 
 
-  handleAnswersChange(answer) {
-    return e => {
-      const value = e.target.value;
-      this.setState(prevState => {
-        const newAnswers = [...prevState.answers];
-        newAnswers[answer] = value;
-        console.log('stelle', answer, 'val', newAnswers);
-        return ({
-          answers: newAnswers
-        });
-      });
-    };
+  handleFoodTypeChange(e) {
+    this.setState({
+      foodType: e.target.value
+    });
+  }
+
+  handleCountryChange(e) {
+    this.setState({
+      country: e.target.value
+    });
   }
 
   handleImageChange(e) {
-    this.setState({
-      image: e.target.value
-    });
+    this.setState({file:e.target.files[0]});
   }
   handleNameChange(e) {
     this.setState({
@@ -77,30 +76,36 @@ class NewRecipe extends Component {
       recipe: e.target.value
     });
   }
+  handleIngridientsChange(e) {
+    this.setState({
+      ingridients: e.target.value
+    });
+  }
 
-  onSubmit(e) {
-    e.preventDefault();
+  
 
-    var answers = this.state.answers;
-    var recipe = this.state.recipe;
-    var image = this.state.image;
-    var name = this.state.name;
-    var food = { name, answers, recipe, image };
 
-    axios
-      .post("http://localhost:9000/addRecipe", food)
-      .then(res => console.log(res.food))
-      .catch(error => {
-        console.log(error.response);
+
+    onSubmit(e){
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append('name',this.state.name);
+      formData.append('ingridients',this.state.ingridients);
+      formData.append('recipe',this.state.recipe);
+      formData.append('country',this.state.country);
+      formData.append('foodType',this.state.foodType);
+      formData.append('myImage',this.state.file);
+      const config = {
+          headers: {
+              'content-type': 'multipart/form-data'
+          }
+      };
+      axios.post("http://localhost:9000/addRecipe",formData,config)
+          .then((response) => {
+              alert("The file is successfully uploaded");
+          }).catch((error) => {
       });
 
-    this.setState({
-      question: "",
-      answers: ["false", "false", "false"],
-      recipe: "",
-      image: "",
-      foodType:""
-    });
   }
 
   //Here is where our HTML-Markup is designed, in this case just our Edit Button
@@ -128,44 +133,46 @@ class NewRecipe extends Component {
                     id="name"
                   />
                 </FormGroup>
-                <h4>Answers</h4>
-                <FormGroup>
-                  <Label for="Korea" value="Korea">
-                    Korea
-                  </Label>
-                  <Input
-                    value={this.state.answers[0]}
-                    onChange={this.handleAnswersChange(0)}
-                    type="select"
-                    name="Korea"
-                    id="Korea"
-                  >
-                    <option value="true">true</option>
-                    <option value="false">false</option>
-                  </Input>
+               
+                <FormGroup tag="fieldset">
+          <legend>Country</legend>
+          <FormGroup check>
+            <Label check>
+              <Input type="radio" onChange={this.handleCountryChange} name="radio1" value="Iran" checked={this.state.country === 'Iran'}/>{'Iran'}
+       
+            </Label>
+          </FormGroup>
+          <FormGroup check>
+            <Label check>
+              <Input type="radio" onChange={this.handleCountryChange} value="Korea" name="radio1" checked={this.state.country === 'Korea'}/>{'Korea'}
+ 
+            </Label>
+          </FormGroup>
+          <FormGroup check disabled>
+            <Label check>
+              <Input type="radio" name="radio1" onChange={this.handleCountryChange} value="Germany" checked={this.state.country === 'Germany'}/>{'Germany '}
 
-                  <Label for="Iran">Iran</Label>
+            </Label>
+          </FormGroup>
+
+          <FormGroup>
+          <Label for="foodType">FoodType</Label>
+          <Input type="select" onChange={this.handleFoodTypeChange} value={this.state.foodType} name="select" id="foodType">
+            <option>Main</option>
+            <option>Dessert</option>
+            <option>Appetizer</option>
+          </Input>
+        </FormGroup>
+        </FormGroup>
+        <FormGroup>
+                  <Label for="ingridients">Ingridients</Label>
                   <Input
-                    value={this.state.answers[1]}
-                    onChange={this.handleAnswersChange(1)}
-                    type="select"
-                    name="Iran"
-                    id="Iran"
-                  >
-                    <option value="true">true</option>
-                    <option value="false">false</option>
-                  </Input>
-                  <Label for="Germany">Germany</Label>
-                  <Input
-                    value={this.state.answers[2]}
-                    onChange={this.handleAnswersChange(2)}
-                    type="select"
-                    name="Germany"
-                    id="Germany"
-                  >
-                    <option value="true">true</option>
-                    <option value="false">false</option>
-                  </Input>
+                    value={this.state.ingridients}
+                    onChange={this.handleIngridientsChange}
+                    type="textarea"
+                    name="ingr"
+                    id="ingridients"
+                  />
                 </FormGroup>
                 <FormGroup>
                   <Label for="exampleText">Recipe</Label>

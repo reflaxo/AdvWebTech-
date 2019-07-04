@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import defaultPic from '../Images/defaultPic.png';
 
-
-
-
-class QuizImage extends Component {
+class RecipeImage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,10 +17,10 @@ class QuizImage extends Component {
     if (this.props.image) {
       const imageTemp=this.arrayBufferToBase64(this.props.image.data.data);
       this.setState({ imageString: imageTemp });
-
+    console.log("Stringify" + JSON.stringify(this.props.image.data.data));
+      console.log("Props" + this.props.image);
+      console.log("Base64" + imageTemp);
     }
-
-
   }
 //Transforms the Buffer to string
   arrayBufferToBase64(buffer){
@@ -31,7 +28,7 @@ class QuizImage extends Component {
     var bytes = [].slice.call(new Uint8Array(buffer));
     bytes.forEach((b) => binary += String.fromCharCode(b));
     return window.btoa(binary);
-};
+    };
 
 
   toggleHover() {
@@ -45,7 +42,6 @@ class QuizImage extends Component {
           <div>
             <div>
               <img
-                className="quizImage"
 				    src={`data:image/png;base64,${this.state.imageString}`}
                 onMouseEnter={this.toggleHover}
                 onMouseLeave={this.toggleHover}
@@ -64,4 +60,4 @@ class QuizImage extends Component {
   }
 }
 
-export default QuizImage;
+export default RecipeImage;

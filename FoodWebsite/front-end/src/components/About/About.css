@@ -1,0 +1,77 @@
+
+.App29292 {
+    max-width: 420px;
+    min-width: 400px;
+    margin-left: 60%;
+    margin-top: -75px;
+    text-align: justify;
+}
+h1
+{
+    padding: 100px;
+    text-align: right;
+}
+.textBlackShadow
+{
+    color: rgba(0, 0, 0, 0.97);
+    font-size: 20px;
+    font-family: Arial;
+    text-shadow: 1px 1px 2px black;
+}
+
+input[type=text],input[type=email], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    margin-left:6px;
+    resize: vertical;
+    color:red;
+
+}
+input[type=submit] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+.container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+.sosis
+{
+    position: absolute;
+    padding: 100px;
+    margin: auto;
+}
+.elham
+{
+    /*position: absolute;*/
+    /*height: 100%;*/
+    z-index: -10;
+    /*text-align: center;*/
+    /*transition: all 500ms ease;*/
+    /*width: 161%;*/
+    /*margin-left: -547px;*/
+    /*margin-top: -21px;*/
+    min-height: 100%;
+    min-width: 930px;
+    /* Set up proportionate scaling */
+    width:80%;
+    height: auto;
+    /* Set up positioning */
+    position: fixed;
+    top: 0;
+    left: 0;
+}

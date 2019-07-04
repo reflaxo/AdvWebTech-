@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import update from 'react-addons-update';
 //import quizQuestions from "./quizQuestions";
-import Quiz from './Quiz';
+import CompleteQuestion from './CompleteQuestion';
 import axios from 'axios';
 import Result from './Result';
 import './Quiz.css';
@@ -11,21 +11,18 @@ class QuizApp extends Component {
     super(props);
 
     this.state = {
-      backgroundColor: 'white',
+      backgroundColor: 'green',
       quizQuestions: [],
       counter: 0,
-      questionId: 1,
-      answersCount: {
-        Stark: 0,
-        Lannister: 0,
-        Targaryen: 0
-      },
+      answerOptions:["Iran", "Korea", "Germany"],
+      correctAnswersCounter:0,
       result: ''
     };
 
     this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
   }
 
+  //Gets Data from Backend
   componentDidMount() {
     axios
       .get('http://localhost:9000/getRecipes')
@@ -40,7 +37,7 @@ class QuizApp extends Component {
         console.log(error);
       });
   }
-
+//Shuffles the Questions
   shuffleArray(array) {
     var currentIndex = array.length,
       temporaryValue,
@@ -62,66 +59,53 @@ class QuizApp extends Component {
   }
 
   handleAnswerSelected(event) {
-    this.setUserAnswer(event.currentTarget.value);
+    //Handles what happens when you select an answer
+    const givenAnswer = event.currentTarget.value;
+    const quizLength = this.state.quizQuestions.length;
+    const questionCount = this.state.counter+1; 
 
+    this.setState({
+      answersCount: this.state.answersCount + 1,
+      answer: givenAnswer 
+    });
+
+    console.log("required answer"+ JSON.stringify(this.state.quizQuestions[this.state.counter]) + "given" + givenAnswer)
     if (
-      this.state.quizQuestions[this.state.counter].question.rightwrong ===
-      'false'
+      this.state.quizQuestions[this.state.counter].country !==
+      givenAnswer 
     ) {
       this.setState({
         backgroundColor: 'red'
       });
-      if (this.state.questionId < this.state.quizQuestions.length) {
+      if (questionCount < quizLength) {
         setTimeout(() => this.setNextQuestion(), 300);
       } else {
-        setTimeout(() => this.setResults(this.getResults()), 300);
+        setTimeout(() => this.setResults(), 300);
       }
     } else {
       this.setState({
-        backgroundColor: 'green'
+        backgroundColor: 'green',
+        correctAnswersCounter: this.state.correctAnswersCounter+1,
       });
-      if (this.state.questionId < this.state.quizQuestions.length) {
+      if (questionCount < quizLength) {
         setTimeout(() => this.setNextQuestion(), 300);
       } else {
-        setTimeout(() => this.setResults(this.getResults()), 300);
+        setTimeout(() => this.setResults(), 300);
       }
     }
-  }
-
-  setUserAnswer(answer) {
-    const updatedAnswersCount = update(this.state.answersCount, {
-      [answer]: { $apply: currentValue => currentValue + 1 }
-    });
-
-    this.setState({
-      answersCount: updatedAnswersCount,
-      answer: answer
-    });
   }
 
   setNextQuestion() {
     this.setState(prevState => ({
       counter: prevState.counter +1,
       questionId: prevState.questionId +1 ,
+      backgroundColor: 'white',
       answer: ''
     }));
   }
-
-  getResults() {
-    const answersCount = this.state.answersCount;
-    const answersCountKeys = Object.keys(answersCount);
-    const answersCountValues = answersCountKeys.map(key => answersCount[key]);
-    const maxAnswerCount = Math.max.apply(null, answersCountValues);
-
-    return answersCountKeys.filter(key => answersCount[key] === maxAnswerCount);
-  }
-
-  setResults(result) {
-    if (result.length === 1) {
-      this.setState({ result: result[0] });
-    } else {
-      this.setState({ result: 'Undetermined' });
-    }
+  setResults() {
+    console.log("got to results" +this.state.correctAnswersCounter );
+    this.setState({ result: String(this.state.correctAnswersCounter)});
   }
 
   renderQuiz() {
@@ -132,14 +116,12 @@ class QuizApp extends Component {
     const currentQuestion = quizQuestions[counter];
 
     return (
-      <Quiz
-        answer={currentQuestion.answer}
-        backgroundColor={this.state.backgroundColor}
-        answerOptions={currentQuestion.answers}
-        questionId={this.state.questionId}
-        question={currentQuestion.question}
-        image={currentQuestion.image}
-        recipe={currentQuestion.recipe}
+      <CompleteQuestion
+      question={currentQuestion}
+       
+        bgColor={this.state.backgroundColor}
+        questionId={counter}
+   
         questionTotal={this.state.quizQuestions.length}
         onAnswerSelected={this.handleAnswerSelected}
       />
@@ -147,7 +129,7 @@ class QuizApp extends Component {
   }
 
   renderResult() {
-    return <Result quizResult={this.state.result} />;
+    return <Result quizResult={this.state.result} recipes={this.state.quizQuestions} />;
   }
 
   render() {

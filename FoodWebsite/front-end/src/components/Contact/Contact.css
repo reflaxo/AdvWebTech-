@@ -1,0 +1,75 @@
+* {
+    box-sizing: border-box;
+}
+.App12 {
+    padding-top: 8px;
+    max-width: 420px;
+    margin: 0 auto;
+    text-align: left;
+    position:relative;
+}
+h1 {
+    padding:13px;
+    text-align: center;
+    font-size:50px;
+    font-style:oblique;
+    text-shadow:2px 2px #000000;
+}
+
+input[type=text],input[type=email], select, textarea {
+
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    margin-left:6px;
+    resize: vertical;
+    color:red;
+
+}
+input[type=submit] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+input[type=submit]:hover {
+    background-color: #45a049;
+}
+.container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+.sosis
+{
+    position: absolute;
+    padding: 100px;
+    margin: auto;
+}
+.Aida
+{
+    /*position: absolute;*/
+    /*height: 100%;*/
+    z-index: -10;
+    /*text-align: center;*/
+    /*transition: all 500ms ease;*/
+    /*width: 161%;*/
+    /*margin-left: -547px;*/
+    /*margin-top: -21px;*/
+    min-height: 100%;
+    min-width: 1024px;
+    /* Set up proportionate scaling */
+    width:100%;
+    height: auto;
+    /* Set up positioning */
+    position: fixed;
+    top: 0;
+    left: 0;
+}

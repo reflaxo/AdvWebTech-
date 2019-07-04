@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import NewRecipe from "./NewRecipe";
 import DeleteAll from "./DeleteAll";
+import RecipeImage from "./ImageRecipe";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 //Small JSX Component exporting a button that changes looks when it's clicked
@@ -30,6 +31,7 @@ class Recipe extends Component {
         this.setState({
           recipes: recipesdata,
         });
+        console.log(recipesdata);
       })
       .catch(error => {
         console.log(error);
@@ -51,22 +53,31 @@ class Recipe extends Component {
   
       
      
-        if (this.state.food && this.state.food.length > 0) {
+        if (this.state.recipes && this.state.recipes.length > 0) {
         return (
             <div>
             <p>Recipe</p>
         <Button color="info" onClick={this.addRecipe}>+
         </Button>   <DeleteAll/>
+
+        {
+                  this.state.recipes.map((recipe =>
+                    <div><th k>
+                        {recipe.name} {recipe.country}
+                     
+                    </th>
+                    <RecipeImage image={recipe.image} name={recipe.name} recipe={recipe.recipe}/>
+                    {recipe.country}
+                     </div>
+                    ))
+                }
+        
+ 
+      
      
         <NewRecipe addRecipe={addRecipe}/>
      
-                {
-                  this.state.food.map((items =>
-                    <th key="">
-                        {items.food}
-                    </th>
-                    ))
-                }
+      
             </div>
         );
     }
