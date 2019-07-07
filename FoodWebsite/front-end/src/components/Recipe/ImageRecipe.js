@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import defaultPic from '../Images/defaultPic.png';
+import "tabler-react/dist/Tabler.css";
+import { Page, Grid, GalleryCard, Form } from "tabler-react";
+
 
 class RecipeImage extends Component {
   constructor(props) {
@@ -17,9 +20,6 @@ class RecipeImage extends Component {
     if (this.props.image) {
       const imageTemp=this.arrayBufferToBase64(this.props.image.data.data);
       this.setState({ imageString: imageTemp });
-    console.log("Stringify" + JSON.stringify(this.props.image.data.data));
-      console.log("Props" + this.props.image);
-      console.log("Base64" + imageTemp);
     }
   }
 //Transforms the Buffer to string
@@ -40,15 +40,33 @@ class RecipeImage extends Component {
       <div>
         {this.props.image ? (
           <div>
+                        
+                    <Grid.Col sm={6} lg={4}>
+              <GalleryCard>
+                <GalleryCard.Image
+                  src={`data:image/png;base64,${this.state.imageString}`}
+                  alt={'tag'}
+                />
+                <GalleryCard.Footer>
+                  <GalleryCard.Details
+                
+                    fullName= {this.props.name}
+             
+                  />
+                  <GalleryCard.IconGroup>
+                    <GalleryCard.IconItem name="eye" label={this.props.name} />
+                    <GalleryCard.IconItem
+                      name="heart"
+                      right
+                    />
+                  </GalleryCard.IconGroup>
+                </GalleryCard.Footer>
+              </GalleryCard>
+            </Grid.Col>
             <div>
-              <img
-				    src={`data:image/png;base64,${this.state.imageString}`}
-                onMouseEnter={this.toggleHover}
-                onMouseLeave={this.toggleHover}
-                alt="img"
-              />
+
             </div>
-            {this.state.hover && <div>{this.props.recipe}</div>}
+            {this.state.hover && <div>{this.props.ingridients}{this.props.recipe}</div>}
           </div>
         ) : (
           <div>

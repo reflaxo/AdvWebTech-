@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
 import NewRecipe from "./NewRecipe";
 import DeleteAll from "./DeleteAll";
 import RecipeImage from "./ImageRecipe";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { Page, Grid, Button} from "tabler-react";
 //Small JSX Component exporting a button that changes looks when it's clicked
 class Recipe extends Component {
   //Constructor for defining start settings in this.state and binding functions
@@ -56,27 +56,38 @@ class Recipe extends Component {
         if (this.state.recipes && this.state.recipes.length > 0) {
         return (
             <div>
-            <p>Recipe</p>
+          <Page.Content>
+        <Page.Header
+          title="Recipe"
+          subTitle={"Showing" + this.state.recipes.length +  "Recipes"}
+      
+        />
         <Button color="info" onClick={this.addRecipe}>+
         </Button>   <DeleteAll/>
+        <Grid.Row className="row-cards">
 
         {
                   this.state.recipes.map((recipe =>
+
+
+
+
                     <div><th k>
                         {recipe.name} {recipe.country}
                      
                     </th>
-                    <RecipeImage image={recipe.image} name={recipe.name} recipe={recipe.recipe}/>
-                    {recipe.country}
+                    {recipe.ingridients}
+                    <RecipeImage image={recipe.image} name={recipe.name} recipe={recipe.recipe} ingridients={recipe.ingridients}/>
+
                      </div>
                     ))
                 }
         
  
       
-     
+        </Grid.Row>
         <NewRecipe addRecipe={addRecipe}/>
-     
+        </Page.Content>
       
             </div>
         );

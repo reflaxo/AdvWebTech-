@@ -9,7 +9,7 @@ function AnswerOption(props) {
 
 
 	return (
-		<li className="answerOption" style={{background: "green"}} >
+		<li className="answerOption" style={{background: props.bgColor}} >
 			<input
 				type="radio"
 				className="radioCustomButton"

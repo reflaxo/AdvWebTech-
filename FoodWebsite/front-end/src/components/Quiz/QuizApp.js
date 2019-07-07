@@ -11,7 +11,7 @@ class QuizApp extends Component {
     super(props);
 
     this.state = {
-      backgroundColor: 'green',
+      backgroundColor: 'white',
       quizQuestions: [],
       counter: 0,
       answerOptions:["Iran", "Korea", "Germany"],
@@ -69,7 +69,7 @@ class QuizApp extends Component {
       answer: givenAnswer 
     });
 
-    console.log("required answer"+ JSON.stringify(this.state.quizQuestions[this.state.counter]) + "given" + givenAnswer)
+    console.log("required answer"+ JSON.stringify(this.state.quizQuestions[this.state.counter]) + "given" + givenAnswer);
     if (
       this.state.quizQuestions[this.state.counter].country !==
       givenAnswer 
@@ -80,7 +80,7 @@ class QuizApp extends Component {
       if (questionCount < quizLength) {
         setTimeout(() => this.setNextQuestion(), 300);
       } else {
-        setTimeout(() => this.setResults(), 300);
+        setTimeout(() => this.setResults(), 500);
       }
     } else {
       this.setState({
@@ -90,7 +90,7 @@ class QuizApp extends Component {
       if (questionCount < quizLength) {
         setTimeout(() => this.setNextQuestion(), 300);
       } else {
-        setTimeout(() => this.setResults(), 300);
+        setTimeout(() => this.setResults(), 500);
       }
     }
   }

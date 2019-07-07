@@ -52,7 +52,7 @@ class QuizImage extends Component {
                 alt="img"
               />
             </div>
-            {this.state.hover && <div>{this.props.recipe}</div>}
+            {this.state.hover && <div>{this.props.ingridients}{this.props.recipe}</div>}
           </div>
         ) : (
           <div>

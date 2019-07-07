@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 import QuizImage from "./QuizImage";
 import QuestionCount from "./QuestionCount";
@@ -18,17 +17,20 @@ function CompleteQuestion(props) {
       transitionAppear
       transitionAppearTimeout={500}
     >
+
       <div key={props.questionId}>
+
+
         <QuestionCount counter={props.questionId} total={props.questionTotal} />
         <QuizImage image={props.question.image} recipe={props.question.recipe} />
         <h3>Where is this dish from?</h3>
         <ul className="answerOptions">
           <AnswerOption 
-          answerName="Korea"   rightAnswer={props.question.country}  onAnswerSelected={props.onAnswerSelected}/>
+          answerName="Korea"   bgColor={props.bgColor}  onAnswerSelected={props.onAnswerSelected}/>
             <AnswerOption 
-          answerName="Iran"       rightAnswer={props.question.country} onAnswerSelected={props.onAnswerSelected}/>
+          answerName="Iran"     bgColor={props.bgColor}    onAnswerSelected={props.onAnswerSelected}/>
              <AnswerOption 
-          answerName="Germany"     rightAnswer={props.question.country}   onAnswerSelected={props.onAnswerSelected} />
+          answerName="Germany"    bgColor={props.bgColor}  onAnswerSelected={props.onAnswerSelected} />
         </ul>
       </div>
     </ReactCSSTransitionGroup>

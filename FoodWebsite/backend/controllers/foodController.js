@@ -39,7 +39,6 @@ exports.addRecipe = function(req, res) {
         contentType: req.file.mimetype,
         data: new Buffer(encode_image, "base64")
       },
-      question: "Where is this food from?",
       country: req.body.country,
       ingridients: req.body.ingridients,
       foodType: req.body.foodType,
