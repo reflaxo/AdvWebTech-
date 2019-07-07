@@ -4,44 +4,48 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require("cors");
-var multer = require('multer');
-require("./models/foodModel");
-
-//Import Routers
-//========= Task 1.2.1 Start ====================
-var FoodRouter = require('./routes/foodData');
-//========= Task 1.2.1 End ======================
-
-var app = express();
-
-//Set up mongoose connection
-
-//Import the mongoose module
-//========= Task 2.1 Start ====================
 var mongoose = require('mongoose');
+var FoodRouter = require('./routes/foodData');
 
-//Set up default mongoose connection
-var mongoDB  = 'mongodb://localhost:27017/food';
-mongoose.connect(mongoDB).then(() => {
-console.log("Connected to Database");
-}).catch((err) => {
-    console.log("Not Connected to Database ERROR! ", err);
-});
-//========= Task 2.1 End ======================
-
+require("./models/foodModel");
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
 
+
+const MongoClient = require('mongodb').MongoClient;
+const uri = "mongodb+srv://adWebTechSS19:webTechSS19@cluster0-2i0wj.mongodb.net/test?retryWrites=true&w=majority";
+const client = new MongoClient(uri, { useNewUrlParser: true });
+
+client.connect(err => {
+  if (err) console.log('failed to connect');
+  else {
+    console.log('connected');
+    database = client.db("Web");
+    foodCollection = database.collection("Food");
+    console.log("Connected to `" + "Web" + "`!");
+  }
+});
+
 //Get the default connection
-var db = mongoose.connection;
+//var db = mongoose.connection;
 
 //Bind connection to error event (to get notification of connection errors)
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+//db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+/*
+var MongoClient = require('mongodb').MongoClient;
 
+var uri = "mongodb://reflaxo:lionthe12DB#@cluster0-shard-00-00-2i0wj.mongodb.net:27017,cluster0-shard-00-01-2i0wj.mongodb.net:27017,cluster0-shard-00-02-2i0wj.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority";
+MongoClient.connect(uri, function(err, client) {
+  const collection = client.db("Web").collection("Food");
+  // perform actions on the collection object
+  client.close();
+});*/
+
+
+var app = express();
+app.use(cors());
+app.use('/', FoodRouter);
 app.use(logger('dev'));
 app.use(cors());
 app.use(express.json());
@@ -50,11 +54,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-//Mount Routers
-
-//========= Task 1.2.2 Start ====================
-app.use('/', FoodRouter);
-//========= Task 1.2.2 End ======================
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -65,11 +64,9 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  console.log(err);
 });
 
 module.exports = app;

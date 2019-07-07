@@ -46,26 +46,33 @@ exports.addRecipe = function(req, res) {
     };
 
     var food = new Food(newFoodEntry);
-    food.save(function(error) {
-      if (error) {
-        console.log("There was an error server side" + error);
-        throw error;
-      }
+
+      foodCollection.insert(food, (error, result) => {
+        if(error) {
+            return response.status(500).send(error);
+        }
+        res.send(result.result);
     });
+
+
   });
 };
 
-exports.showRecipes = function(req, res, next) {
-  Food.find((err, data) => {
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ recipes: data });
-  });
+//Shows Recipe for Quiz and Country
+exports.showRecipes = function(req, res) {
+ 
+  foodCollection.find({}).toArray(function(err, data) {
+    if(err) {
+        console.error(JSON.stringify(err));
+    } 
+   return res.json(data);
+});
 };
 
 // this is our delete method
 // this method removes existing data in our database
 exports.deleteAllRecipes = function(req, res, next) {
-  Food.remove({}, function(err) {
+    foodCollection.remove({}, function(err) {
     if (err) {
       console.log(err);
     } else {
@@ -83,7 +90,7 @@ exports.deleteOneRecipe = function(req, res, next) {
 };
 
 exports.updateRecipe = function(req, res) {
-  Food.findById(req.params.id, function(err, food) {
+    foodCollection.findById(req.params.id, function(err, food) {
     if (!food) res.status(404).send("data is not found");
     else food.question = "Where is this food from?";
     food.answers = req.body.answers;

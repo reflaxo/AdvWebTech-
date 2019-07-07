@@ -1,43 +1,48 @@
-import React, { Component } from "react";
-import { Button } from "reactstrap";
+import React from 'react';
+import elham from './Contact.css';
 
-//Small JSX Component exporting a button that changes looks when it's clicked
-class About extends Component {
-  //Constructor for defining start settings in this.state and binding functions
+class Contact extends React.Component {
 
-  constructor(props) {
-    //properties given to us by other components are connected with "props"
-    super(props);
-    //You need to bind a function in the constructor to call it throughout the class
-    this.onEdit = this.onEdit.bind(this);
-
-    //This is were our start settings are defined:
-    //We want our Edit button to show "off"/false
-    this.state = {
-      isEditing: false
-    };
-  }
-
-  onEdit(ev) {
-    //New State is set
-    this.setState( () => ({ isEditing: !this.state.isEditing }));
-  }
-    //Here is where our HTML-Markup is designed, in this case just our Edit Button
-  render() {
-    //The value of isEditing is called from the state
-    const { isEditing } = this.state;
-    //Our text is called with this.props;
-    //const{text}= this.props.text;
-    //Here starts our HTML, Javascript is marked with "{}" brackets.
-    return (
-      <div>
-        <Button color="info" onClick={this.onEdit}>
-          {isEditing ? "Done Editing?" : "Edit"}
-        </Button>
-        <p>About</p>
-      </div>
-    );
-  }
+    constructor(props) {
+        super(props);
+        this.state = {apiResponse: ""};
+    }
+    callAPI() {
+        fetch("http://localhost:3001/testAPI")
+            .then(res => res.text())
+            .then(res => this.setState({apiResponse: res}))
+            .catch(err => err);
+    }
+    componentDidMount() {
+        this.callAPI();
+    }
+    render() {
+        return (
+            <div>
+                <div>
+                    <img src={ require('../Images/IMAGE 2019-07-03 22_27_47.jpg')}  className="Aida" alt="aligment"/></div>
+                <header>
+                    <h1 className="contactHeading"> Contact us </h1>
+                </header>
+                <div className="App12">
+                    <form method="POST" action="http://localhost:3001/submit-form">
+                        <div>
+                            <label> 👤First Name</label>
+                            <input type="text" icon="us" id="fname" name="firstname" placeholder="Your name.."/>
+                            <label>👥Last Name</label>
+                            <input type="text" id="lname" name="lastname" placeholder="Your last name.."/>
+                            <label>📧Email</label>
+                            <input type="email" id="email" name="email" placeholder="Your email"/>
+                            <label>✎Subject</label>
+                            <textarea id="subject" name="subject" placeholder="Write something.."></textarea>
+                            <input type="submit" value="Submit"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        );
+    }
 }
 
-export default About;
+
+export default Contact;

@@ -18,8 +18,10 @@ class RecipeImage extends Component {
   componentDidMount() {
     //If there is an image it will transform the image to a picture
     if (this.props.image) {
-      const imageTemp=this.arrayBufferToBase64(this.props.image.data.data);
-      this.setState({ imageString: imageTemp });
+        console.log(this.props.image.data)
+      //const imageTemp=this.arrayBufferToBase64(this.props.image.data);
+      //this.setState({ imageString: imageTemp });
+      this.setState({ imageString: this.props.image.data });
     }
   }
 //Transforms the Buffer to string
@@ -41,7 +43,7 @@ class RecipeImage extends Component {
         {this.props.image ? (
           <div>
                         
-                    <Grid.Col sm={6} lg={4}>
+            <Grid.Col sm={6} lg={4}>
               <GalleryCard>
                 <GalleryCard.Image
                   src={`data:image/png;base64,${this.state.imageString}`}

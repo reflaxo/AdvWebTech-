@@ -1,0 +1,41 @@
+.homeText{
+    text-align: left;
+    padding-left: 90px;
+    text-decoration-style: wavy;
+    font-style:oblique;
+    font-weight: bold;
+    text-align: left;
+    text-shadow:2px 2px #000000;}
+
+.elham2
+{
+    /*position: absolute;*/
+    /*height: 100%;*/
+    z-index: -10;
+    /*text-align: center;*/
+    /*transition: all 500ms ease;*/
+    /*width: 161%;*/
+    /*margin-left: -547px;*/
+    /*margin-top: -21px;*/
+    min-height: 100%;
+    min-width: 1024px;
+    /* Set up proportionate scaling */
+    width:100%;
+    height:auto;
+    /* Set up positioning */
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+.sizeBozorg
+{
+    text-decoration-style: dotted;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: left;
+    padding-left: 90px;
+    padding-top: 133px;
+    text-decoration-style: wavy;
+    font-style:oblique;
+    text-shadow:2px 2px #000000;
+}

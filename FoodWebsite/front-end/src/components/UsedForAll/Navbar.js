@@ -15,6 +15,8 @@ import {
 import QuizApp from "../Quiz/QuizApp.js";
 import About from "../About/About.js";
 import Recipe from "../Recipe/Recipe.js";
+import Contact from  "../Contact/Contact.js";
+import Home from "../Home/Home";
 
 
 
@@ -42,14 +44,26 @@ export default class FoodNavbar extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
+                <NavLink href="/">Home</NavLink>
+              </NavItem>
+
+              <NavItem>
                 <NavLink href="/Quiz/">Quiz</NavLink>
               </NavItem>
-              <NavItem>
-                <NavLink href="/About/">About Us</NavLink>
-              </NavItem>
+
               <NavItem>
                 <NavLink href="/Recipe/">Country</NavLink>
               </NavItem>
+
+              <NavItem>
+                <NavLink href="/Contact/">Contact</NavLink>
+              </NavItem>
+
+              <NavItem>
+                <NavLink href="/About/">About Us</NavLink>
+              </NavItem>
+
+
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret>
                   Options
@@ -70,10 +84,9 @@ export default class FoodNavbar extends React.Component {
             </Nav>
           </Collapse>
         </Navbar>
-
-
-        <Route path="/" exact component={Recipe} />
+        <Route path="/" exact component={Home} />
         <Route path="/about/" component={About} />
+        <Route path="/Contact/" component={Contact} />
         <Route path="/recipe/" component={Recipe} />
         <Route path="/quiz" render={() => <QuizApp totalQuestions={10} />}/>
         </Router>

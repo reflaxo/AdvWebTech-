@@ -1,43 +1,36 @@
-import React, { Component } from "react";
-import { Button } from "reactstrap";
+import React from 'react';
+import './About.css';
+class About extends React.Component {
 
-//Small JSX Component exporting a button that changes looks when it's clicked
-class About extends Component {
-  //Constructor for defining start settings in this.state and binding functions
-
-  constructor(props) {
-    //properties given to us by other components are connected with "props"
-    super(props);
-    //You need to bind a function in the constructor to call it throughout the class
-    this.onEdit = this.onEdit.bind(this);
-
-    //This is were our start settings are defined:
-    //We want our Edit button to show "off"/false
-    this.state = {
-      isEditing: false
-    };
-  }
-
-  onEdit(ev) {
-    //New State is set
-    this.setState( () => ({ isEditing: !this.state.isEditing }));
-  }
-    //Here is where our HTML-Markup is designed, in this case just our Edit Button
   render() {
-    //The value of isEditing is called from the state
-    const { isEditing } = this.state;
-    //Our text is called with this.props;
-    //const{text}= this.props.text;
-    //Here starts our HTML, Javascript is marked with "{}" brackets.
+    var divStyle = {
+      color: 'black',
+      textShadow :  '2px 2px 2px black',
+      fontsize: '300%',
+
+    };
     return (
-      <div>
-        <Button color="info" onClick={this.onEdit}>
-          {isEditing ? "Done Editing?" : "Edit"}
-        </Button>
-        <p>About</p>
-      </div>
+        <div className="App29292">
+          <div>
+            <h1 classname="aboutHeading"  style={divStyle}>About us</h1>
+            <div className="textBlackShadow">People also connect to their cultural
+              or ethnic group through similar food patterns.
+              People from different cultural backgrounds eat different foods.
+              The ingredients, methods of preparation, preservation techniques
+              and types of food eaten at different meals vary among cultures.
+              The main purpose of this web site is  providing information to
+              improve people knowledge about different countries food , make
+              a fun to them as some quiz also give an idea to prepare different
+              main course,  appetizer and dessert. </div>
+          </div>
+          <body>
+          <img src={ require('../../components/Images/Aboutus.jpg')}  className="elham" alt="aligment"/>
+          </body>
+        </div>
+
     );
   }
 }
+
 
 export default About;

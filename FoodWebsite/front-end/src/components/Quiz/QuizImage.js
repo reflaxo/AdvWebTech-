@@ -18,9 +18,7 @@ class QuizImage extends Component {
   componentDidMount() {
     //If there is an image it will transform the image to a picture
     if (this.props.image) {
-      const imageTemp=this.arrayBufferToBase64(this.props.image.data.data);
-      this.setState({ imageString: imageTemp });
-
+      this.setState({ imageString: this.props.image.data });
     }
 
 

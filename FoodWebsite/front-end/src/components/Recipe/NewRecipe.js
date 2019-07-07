@@ -5,7 +5,6 @@ import {
   FormGroup,
   Label,
   Input,
-  InputGroup,
   FormText,
   Col
 } from "reactstrap";

@@ -27,14 +27,14 @@ class QuizApp extends Component {
     axios
       .get('http://localhost:9000/getRecipes')
       .then(res => {
-        const recipes = res.data.recipes;
+        const recipes = res.data;
         const shuffledRecipes = this.shuffleArray(recipes);
         this.setState({
           quizQuestions: shuffledRecipes,
         });
       })
-      .catch(error => {
-        console.log(error);
+      .catch(err => {
+        console.log(err);
       });
   }
 //Shuffles the Questions
