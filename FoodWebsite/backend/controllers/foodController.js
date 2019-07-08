@@ -22,42 +22,44 @@ const upload = multer({
 }).single("myImage");
 
 exports.addRecipe = function(req, res) {
-  upload(req, res, err => {
-    if (req.file.path) {
-      var img = fs.readFileSync(req.file.path);
-      var encode_image = img.toString("base64");
-    } else {
-      var encode_image = "";
-    }
-
-    console.log("Request ---", req.body);
-    console.log("Request file ---", req.file); 
-
-    var newFoodEntry = {
-      name: req.body.name,
-      image: {
-        contentType: req.file.mimetype,
-        data: new Buffer(encode_image, "base64")
-      },
-      country: req.body.country,
-      ingridients: req.body.ingridients,
-      foodType: req.body.foodType,
-      recipe: req.body.recipe
-    };
-
-    var food = new Food(newFoodEntry);
-
-      foodCollection.insert(food, (error, result) => {
-        if(error) {
-            return response.status(500).send(error);
-        }
-        res.send(result.result);
+    //Transforms the Image to Base64
+    upload(req, res, err => {
+      if (req.file.path) {
+        var img = fs.readFileSync(req.file.path);
+        var encode_image = img.toString("base64");
+      } else {
+        var encode_image = "";
+      }
+  
+      //Logs Data
+      console.log("Request ---", req.body);
+      console.log("Request file ---", req.file); 
+  
+      //Creates all the Data
+      var newFoodEntry = {
+        name: req.body.name,
+        image: {
+          contentType: req.file.mimetype,
+          data: new Buffer(encode_image, "base64")
+        },
+        country: req.body.country,
+        ingridients: req.body.ingridients,
+        foodType: req.body.foodType,
+        recipe: req.body.recipe
+      };
+  
+      var food = new Food(newFoodEntry);
+  
+        foodCollection.insert(food, (error, result) => {
+          if(error) {
+              return response.status(500).send(error);
+          }
+          res.send(result.result);
+      });
+  
+  
     });
-
-
-  });
-};
-
+  };
 //Shows Recipe for Quiz and Country
 exports.showRecipes = function(req, res) {
  

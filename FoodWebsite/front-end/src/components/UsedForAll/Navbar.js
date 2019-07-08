@@ -11,10 +11,11 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem } from 'reactstrap';
-  import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+  import { BrowserRouter as Router, Route } from "react-router-dom";
 import QuizApp from "../Quiz/QuizApp.js";
 import About from "../About/About.js";
 import Recipe from "../Recipe/Recipe.js";
+import DetailRecipe from "../Recipe/DetailRecipe.js";
 import Contact from  "../Contact/Contact.js";
 import Home from "../Home/Home";
 
@@ -38,7 +39,7 @@ export default class FoodNavbar extends React.Component {
     return (
       <div>
 <Router>
-        <Navbar color="light" light expand="md">
+        <Navbar location={this.props.location} color="light" light expand="md">
           <NavbarBrand href="/">FoodCulture</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
@@ -51,9 +52,23 @@ export default class FoodNavbar extends React.Component {
                 <NavLink href="/Quiz/">Quiz</NavLink>
               </NavItem>
 
-              <NavItem>
-                <NavLink href="/Recipe/">Country</NavLink>
-              </NavItem>
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret>
+                  Country
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <DropdownItem href="/Recipe/">
+                    Germany
+                  </DropdownItem>
+                  <DropdownItem href="/Recipe/">
+                   Iran
+                  </DropdownItem>
+       
+                  <DropdownItem href="/Recipe/">
+                   Korea
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
 
               <NavItem>
                 <NavLink href="/Contact/">Contact</NavLink>
@@ -64,33 +79,19 @@ export default class FoodNavbar extends React.Component {
               </NavItem>
 
 
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Options
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem>
-                    Option 1
-                  </DropdownItem>
-                  <DropdownItem>
-                    Option 2
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>
-                    Reset
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
+        
             </Nav>
           </Collapse>
         </Navbar>
         <Route path="/" exact component={Home} />
         <Route path="/about/" component={About} />
-        <Route path="/Contact/" component={Contact} />
+        <Route path="/contact/" component={Contact} />
         <Route path="/recipe/" component={Recipe} />
+        <Route path={`/detailRecipe/:recipeId`} render={(props) => <DetailRecipe {...props} name={props.name} />} />
         <Route path="/quiz" render={() => <QuizApp totalQuestions={10} />}/>
         </Router>
       </div>
     );
   }
 }
+

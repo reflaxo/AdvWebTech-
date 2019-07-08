@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import axios from "axios";
 //Small JSX Component exporting a button that changes looks when it's clicked
-class About extends Component {
+class DetailRecipe extends Component {
   //Constructor for defining start settings in this.state and binding functions
 
   constructor(props) {
@@ -39,4 +39,4 @@ class About extends Component {
   }
 }
 
-export default About;
+export default DetailRecipe;

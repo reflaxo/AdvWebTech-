@@ -6,7 +6,8 @@ import {
   Label,
   Input,
   FormText,
-  Col
+  Col,
+  Row, Modal, ModalHeader, ModalBody, ModalFooter 
 } from "reactstrap";
 import axios from "axios";
 
@@ -14,7 +15,6 @@ class NewRecipe extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      apiResponse: [],
       objToArr: [],
       answers: ["false", "false", "false"],
       recipe: "",
@@ -115,10 +115,11 @@ class NewRecipe extends Component {
 // Add dropdown for foodType: "Desert/Main/etc... what you want"
     return (
       <div>
-        {addRecipe ? (
+     
+            <Modal isOpen={this.props.addRecipe} toggle={this.props.toggle}>
+            <ModalHeader toggle={this.toggle}>Add New Recipe</ModalHeader>
+            <ModalBody>
           <div>
-            <p className="App-intro">;{this.state.apiResponse}</p>
-            <p>Recipe</p>
 
             <Form onSubmit={this.onSubmit}>
               <Col sm={10}>
@@ -200,18 +201,15 @@ class NewRecipe extends Component {
                       add to our database
                     </FormText>
                   </Col>
-                </FormGroup>
-                <FormGroup check row>
-                  <Col sm={{ size: 10, offset: 2 }}>
-                    <Button>Submit</Button>
-                  </Col>
-                </FormGroup>
-              </Col>
+                </FormGroup></Col>
             </Form>
           </div>
-        ) : (
-          <div />
-        )}
+          </ModalBody>
+            <ModalFooter>
+            <Button color="primary" onClick={this.onSubmit}>Submit</Button>{' '}
+            <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+          </ModalFooter>
+              </Modal>
       </div>
     );
   }

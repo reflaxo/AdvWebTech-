@@ -14,15 +14,9 @@ var foodSchema = new Schema({
   }
   );
 
+  
+
 module.exports = mongoose.model('Food', foodSchema);
 
 
-//========= Task 2.1 End ======================
-
-
-
-
-//Export model
-//========= Task 3.1 - Export model====================
-//module.exports = mongoose.model('Food', foodSchema);
 

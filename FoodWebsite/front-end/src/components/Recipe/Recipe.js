@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import NewRecipe from "./NewRecipe";
 import DeleteAll from "./DeleteAll";
-import RecipeImage from "./ImageRecipe";
+import RecipeImage from "./RecipeImage";
 import axios from "axios";
-import { Page, Grid, Button} from "tabler-react";
-import {Row} from "reactstrap";
+import { Page, Grid, Button } from "tabler-react";
+import { Row, Col } from "reactstrap";
 //Small JSX Component exporting a button that changes looks when it's clicked
 class Recipe extends Component {
   //Constructor for defining start settings in this.state and binding functions
@@ -13,7 +13,7 @@ class Recipe extends Component {
     //properties given to us by other components are connected with "props"
     super(props);
     //You need to bind a function in the constructor to call it throughout the class
-    this.addRecipe = this.addRecipe.bind(this);
+    this.toggle = this.toggle.bind(this);
 
     //This is were our start settings are defined:
     //We want our Edit button to show "off"/false
@@ -38,14 +38,15 @@ class Recipe extends Component {
       });
   }
 
-  addRecipe(ev) {
-    //New State is set
-    this.setState(() => ({ addRecipe: !this.state.addRecipe }));
+  toggle() {
+    this.setState(prevState => ({
+      addRecipe: !prevState.addRecipe
+    }));
   }
+
   //Here is where our HTML-Markup is designed, in this case just our Edit Button
   render() {
     //The value of isEditing is called from the state
-    const { addRecipe } = this.state;
     //Our text is called with this.props;
     //const{text}= this.props.text;
     //Here starts our HTML, Javascript is marked with "{}" brackets.
@@ -58,25 +59,26 @@ class Recipe extends Component {
               title="Germany"
               subTitle={"Showing " + this.state.recipes.length + "Recipes"}
             />
-            <Row><Button color="info" onClick={this.addRecipe}>
-              Add Recipe
-            </Button> <DeleteAll /> </Row>
-           
-            <Grid.Row className="row-cards">
+            <Row>
+              <Button color="info" onClick={this.toggle}>
+                Add Recipe
+              </Button>{" "}
+              <DeleteAll />
+            </Row>
+
+            <Grid.Row>
               {this.state.recipes.map(recipe => (
-                <div>
-              
-                  <RecipeImage
-                  key={recipe.id}
-                    image={recipe.image}
-                    name={recipe.name}
-                    recipe={recipe.recipe}
-                    ingridients={recipe.ingridients}
-                  />
-                </div>
+                <RecipeImage
+                  id={recipe._id}
+                  key={recipe._id}
+                  image={recipe.image}
+                  name={recipe.name}
+                  recipe={recipe.recipe}
+                  ingridients={recipe.ingridients}
+                />
               ))}
             </Grid.Row>
-            <NewRecipe addRecipe={addRecipe} />
+            <NewRecipe addRecipe={this.state.addRecipe} toggle={this.toggle} />
           </Page.Content>
         </div>
       );
@@ -84,11 +86,11 @@ class Recipe extends Component {
     return (
       <div>
         {" "}
-        <Button color="info" onClick={this.addRecipe}>
+        <Button color="info" onClick={this.toggle}>
           Add Recipe
         </Button>{" "}
         <DeleteAll />
-        <NewRecipe addRecipe={addRecipe} />
+        <NewRecipe addRecipe={this.state.addRecipe} />
       </div>
     );
   }

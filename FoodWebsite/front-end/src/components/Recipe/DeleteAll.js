@@ -39,7 +39,7 @@ class DeleteAll extends Component {
     return (
       <div>
         <Button color="info" onClick={this.onDelete}>
-          Delete Button
+          Delete
         </Button>
       </div>
     );

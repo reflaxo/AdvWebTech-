@@ -23,6 +23,10 @@ body {
   list-style: none;
 }
 
+.Button{
+  padding: 20px;
+}
+
 .quizImage {
   margin: 0;
   padding: 0;
