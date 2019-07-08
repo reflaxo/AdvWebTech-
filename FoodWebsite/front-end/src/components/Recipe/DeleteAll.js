@@ -20,16 +20,16 @@ class DeleteAll extends Component {
 
   onDelete(ev) {
     //New State is set
-    this.setState( () => ({ isEditing: !this.state.isEditing }));
+    this.setState(() => ({ isEditing: !this.state.isEditing }));
 
     axios
-    .post("http://localhost:9000/deleteAll")
-    .then(res => console.log(res))
-    .catch(error => {
-      console.log(error.res);
-    });
+      .post("http://localhost:9000/deleteAll")
+      .then(res => console.log(res))
+      .catch(error => {
+        console.log(error.res);
+      });
   }
-    //Here is where our HTML-Markup is designed, in this case just our Edit Button
+  //Here is where our HTML-Markup is designed, in this case just our Edit Button
   render() {
     //The value of isEditing is called from the state
     const { isEditing } = this.state;
@@ -38,8 +38,8 @@ class DeleteAll extends Component {
     //Here starts our HTML, Javascript is marked with "{}" brackets.
     return (
       <div>
-        <Button color="info" onClick={this.onDelete}>
-          Delete
+        <Button color="danger" onClick={this.onDelete}>
+          Delete All
         </Button>
       </div>
     );

@@ -66,10 +66,37 @@ exports.showRecipes = function(req, res) {
   foodCollection.find({}).toArray(function(err, data) {
     if(err) {
         console.error(JSON.stringify(err));
+        res.status(404).send("data is not found");
     } 
    return res.json(data);
 });
 };
+
+//Shows Single Recipe
+exports.showRecipe = function(req, res, next) {
+    const id = mongoose.Types.ObjectId(req.query.id);
+    console.log(req.query.id);
+
+        /*foodCollection.find({_id: id}).toArray(function (err, data){
+     
+        if(err) {
+            console.log("logged this" + id +  req +  JSON.stringify(id + req));
+            if (!data){res.status(404).send("data is not found" + id);} 
+        } 
+        else{console.log(data); res.json(data);}
+      });*/
+
+      foodCollection.findOne({_id: id}, function(err, data){
+        if (err){
+            console.log("errr",err);
+            if (!data){res.status(404).send("data is not found" + id);}
+        }else{
+            res.json(data);
+        }
+
+});
+
+  };
 
 // this is our delete method
 // this method removes existing data in our database

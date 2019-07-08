@@ -3,7 +3,7 @@ import NewRecipe from "./NewRecipe";
 import DeleteAll from "./DeleteAll";
 import RecipeImage from "./RecipeImage";
 import axios from "axios";
-import { Page, Grid, Button } from "tabler-react";
+import { Page, Button } from "tabler-react";
 import { Row, Col } from "reactstrap";
 //Small JSX Component exporting a button that changes looks when it's clicked
 class Recipe extends Component {
@@ -66,7 +66,7 @@ class Recipe extends Component {
               <DeleteAll />
             </Row>
 
-            <Grid.Row>
+            <Row>
               {this.state.recipes.map(recipe => (
                 <RecipeImage
                   id={recipe._id}
@@ -77,7 +77,7 @@ class Recipe extends Component {
                   ingridients={recipe.ingridients}
                 />
               ))}
-            </Grid.Row>
+            </Row>
             <NewRecipe addRecipe={this.state.addRecipe} toggle={this.toggle} />
           </Page.Content>
         </div>
@@ -86,11 +86,14 @@ class Recipe extends Component {
     return (
       <div>
         {" "}
-        <Button color="info" onClick={this.toggle}>
-          Add Recipe
-        </Button>{" "}
-        <DeleteAll />
-        <NewRecipe addRecipe={this.state.addRecipe} />
+        <Row>
+              <Button color="info" onClick={this.toggle}>
+                Add Recipe
+              </Button>{" "}
+              <DeleteAll />
+            </Row>
+
+       Waiting for recipe information...
       </div>
     );
   }

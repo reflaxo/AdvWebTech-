@@ -39,7 +39,7 @@ export default class FoodNavbar extends React.Component {
     return (
       <div>
 <Router>
-        <Navbar location={this.props.location} color="light" light expand="md">
+        <Navbar location={this.props.location} style={{backgroundColor: "lightyellow"}} light expand="md">
           <NavbarBrand href="/">FoodCulture</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
