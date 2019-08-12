@@ -10,10 +10,13 @@ import {
   Row, Modal, ModalHeader, ModalBody, ModalFooter 
 } from "reactstrap";
 import axios from "axios";
+import M from "materialize-css";
 
 class NewRecipe extends Component {
   constructor(props) {
     super(props);
+    this.M = window.M;
+
     this.state = {
       objToArr: [],
       answers: ["false", "false", "false"],
@@ -32,20 +35,6 @@ class NewRecipe extends Component {
     this.handleImageChange = this.handleImageChange.bind(this);
     this.handleRecipeChange = this.handleRecipeChange.bind(this);
     this.handleIngridientsChange = this.handleIngridientsChange.bind(this);
-  }
-
-  componentDidMount() {
-    axios
-    .get('http://localhost:9000/getRecipes')
-    .then(res => {
-      const recipeData = res.data.recipes;
-      this.setState({
-        recipes: recipeData,
-      });
-    })
-    .catch(error => {
-      console.log(error);
-    });
   }
 
 
@@ -87,6 +76,7 @@ class NewRecipe extends Component {
 
     onSubmit(e){
       e.preventDefault();
+      this.props.toggle();
       const formData = new FormData();
       formData.append('name',this.state.name);
       formData.append('ingridients',this.state.ingridients);
@@ -99,9 +89,9 @@ class NewRecipe extends Component {
               'content-type': 'multipart/form-data'
           }
       };
-      axios.post("http://localhost:9000/addRecipe",formData,config)
+      axios.post("/addRecipe",formData,config)
           .then((response) => {
-              alert("The file is successfully uploaded");
+            M.toast({html: 'Your recipe was successfully uploaded!', classes:'black'})
           }).catch((error) => {
       });
 
@@ -137,22 +127,29 @@ class NewRecipe extends Component {
                 <FormGroup tag="fieldset">
           <legend>Country</legend>
           <FormGroup check>
-            <Label check>
-              <Input type="radio" onChange={this.handleCountryChange} name="radio1" value="Iran" checked={this.state.country === 'Iran'}/>{'Iran'}
-       
-            </Label>
-          </FormGroup>
-          <FormGroup check>
-            <Label check>
-              <Input type="radio" onChange={this.handleCountryChange} value="Korea" name="radio1" checked={this.state.country === 'Korea'}/>{'Korea'}
- 
-            </Label>
-          </FormGroup>
-          <FormGroup check disabled>
-            <Label check>
-              <Input type="radio" name="radio1" onChange={this.handleCountryChange} value="Germany" checked={this.state.country === 'Germany'}/>{'Germany '}
+                  
+          <legend>Country</legend>
+    
+<p>
+<label>
 
-            </Label>
+        <input  id="country" onChange={this.onCountryChange} name="country" type="radio"/>
+        <span>Iran</span>
+      </label>
+    </p>
+    <p>
+      <label>
+        <input  id="country" onChange={this.onCountryChange} name="country" type="radio" />
+        <span>Korea</span>
+      </label>
+    </p>
+    <p>
+      <label>
+        <input id="country" onChange={this.onCountryChange} name="country" type="radio"  />
+        <span>Germany</span>
+      </label>
+    </p>
+           
           </FormGroup>
 
           <FormGroup>

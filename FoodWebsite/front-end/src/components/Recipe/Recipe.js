@@ -3,12 +3,74 @@ import NewRecipe from "./NewRecipe";
 import DeleteAll from "./DeleteAll";
 import RecipeImage from "./RecipeImage";
 import axios from "axios";
-import { Page, Button } from "tabler-react";
 import { Row, Col } from "reactstrap";
+import M from "materialize-css";
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import CameraIcon from '@material-ui/icons/PhotoCamera';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Link from '@material-ui/core/Link';
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'. Built with '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Material-UI.
+      </Link>
+    </Typography>
+  );
+}
+
+const useStyles = makeStyles(theme => ({
+  icon: {
+    marginRight: theme.spacing(2),
+  },
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(8, 0, 6),
+  },
+  heroButtons: {
+    marginTop: theme.spacing(4),
+  },
+  cardGrid: {
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8),
+  },
+  card: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  cardMedia: {
+    paddingTop: '56.25%', // 16:9
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+  footer: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(6),
+  },
+}));
 //Small JSX Component exporting a button that changes looks when it's clicked
 class Recipe extends Component {
   //Constructor for defining start settings in this.state and binding functions
-
+ 
   constructor(props) {
     //properties given to us by other components are connected with "props"
     super(props);
@@ -19,24 +81,29 @@ class Recipe extends Component {
     //We want our Edit button to show "off"/false
     this.state = {
       addRecipe: false,
-      recipes: ""
+      recipes: "",
+      country:""
     };
   }
 
   componentDidMount() {
+    const {Country} = this.props.match.params;
     axios
-      .get("http://localhost:9000/getRecipes")
+      .get(`/getRecipes/${Country}`)
       .then(res => {
         const recipesdata = res.data;
         this.setState({
-          recipes: recipesdata
+          recipes: recipesdata,
+          country: Country
         });
         console.log(res);
       })
       .catch(error => {
         console.log(error);
       });
+  
   }
+
 
   toggle() {
     this.setState(prevState => ({
@@ -44,30 +111,34 @@ class Recipe extends Component {
     }));
   }
 
+
   //Here is where our HTML-Markup is designed, in this case just our Edit Button
   render() {
-    //The value of isEditing is called from the state
-    //Our text is called with this.props;
-    //const{text}= this.props.text;
+
     //Here starts our HTML, Javascript is marked with "{}" brackets.
 
     if (this.state.recipes && this.state.recipes.length > 0) {
       return (
         <div>
-          <Page.Content>
-            <Page.Header
-              title="Germany"
-              subTitle={"Showing " + this.state.recipes.length + "Recipes"}
-            />
-            <Row>
-              <Button color="info" onClick={this.toggle}>
-                Add Recipe
-              </Button>{" "}
-              <DeleteAll />
-            </Row>
 
-            <Row>
-              {this.state.recipes.map(recipe => (
+    <React.Fragment>
+      <CssBaseline />
+      <AppBar position="relative">
+        <Toolbar>
+          <CameraIcon />
+          <Typography variant="h6" color="inherit" noWrap>
+              title={this.state.country}
+              subTitle={"Showing " + this.state.recipes.length + " Recipes"}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <main>
+      
+        <Container maxWidth="md">
+        
+          <Grid container spacing={4}>
+                 {this.state.recipes.map(recipe => (
+        
                 <RecipeImage
                   id={recipe._id}
                   key={recipe._id}
@@ -76,10 +147,32 @@ class Recipe extends Component {
                   recipe={recipe.recipe}
                   ingridients={recipe.ingridients}
                 />
-              ))}
-            </Row>
+                
+              ))} 
+            
+         
+          </Grid>
+        </Container>
+      </main>
+      {/* Footer */}
+      <footer>
+        <Typography variant="h6" align="center" gutterBottom>
+          Footer
+        </Typography>
+        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+          Something here to give the footer a purpose!
+        </Typography>
+        <Copyright />
+      </footer>
+      {/* End footer */}
+    </React.Fragment>
+  );
+}
+            
+        
+            
             <NewRecipe addRecipe={this.state.addRecipe} toggle={this.toggle} />
-          </Page.Content>
+      
         </div>
       );
     }
@@ -90,7 +183,6 @@ class Recipe extends Component {
               <Button color="info" onClick={this.toggle}>
                 Add Recipe
               </Button>{" "}
-              <DeleteAll />
             </Row>
 
        Waiting for recipe information...

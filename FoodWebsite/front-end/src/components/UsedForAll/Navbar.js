@@ -18,6 +18,8 @@ import Recipe from "../Recipe/Recipe.js";
 import DetailRecipe from "../Recipe/DetailRecipe.js";
 import Contact from  "../Contact/Contact.js";
 import Home from "../Home/Home";
+import Register from "../Auth/Register";
+import Login from "../Auth/Login";
 
 
 
@@ -57,14 +59,13 @@ export default class FoodNavbar extends React.Component {
                   Country
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem href="/Recipe/">
+                  <DropdownItem href="/Recipe/Germany">
                     Germany
                   </DropdownItem>
-                  <DropdownItem href="/Recipe/">
+                  <DropdownItem href="/Recipe/Iran">
                    Iran
                   </DropdownItem>
-       
-                  <DropdownItem href="/Recipe/">
+                  <DropdownItem href="/Recipe/Korea">
                    Korea
                   </DropdownItem>
                 </DropdownMenu>
@@ -86,7 +87,9 @@ export default class FoodNavbar extends React.Component {
         <Route path="/" exact component={Home} />
         <Route path="/about/" component={About} />
         <Route path="/contact/" component={Contact} />
-        <Route path="/recipe/" component={Recipe} />
+        <Route path={`/Recipe/:Country`}  component={Recipe} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/login" component={Login} />
         <Route path={`/detailRecipe/:recipeId`} render={(props) => <DetailRecipe {...props} name={props.name} />} />
         <Route path="/quiz" render={() => <QuizApp totalQuestions={10} />}/>
         </Router>

@@ -1,7 +1,9 @@
 import React from "react";
 import axios from "axios";
-import { Container, Error404Page } from "tabler-react";
+import DeleteRecipe from "./DeleteRecipe";
+import UpdateRecipe from "./UpdateRecipe";
 import {
+  Container,
   Card,
   CardHeader,
   CardImg,
@@ -10,38 +12,44 @@ import {
   CardTitle,
   CardSubtitle,
   Col,
+  Button,
   Row
 } from "reactstrap";
 
 class DetailRecipe extends React.Component {
   constructor(props) {
     super(props);
+        this.toggle = this.toggle.bind(this);
+
 
     this.state = {
       recipe: {},
       id: "",
       image: "",
-      error: ""
+      error: "",
+      updateRecipe: false,
+      id:""
     };
   }
 
   componentDidMount() {
-    const { recipeId } = this.props.match.params;
-    console.log("launched detail" + recipeId + this.props.match.params);
+    const {recipeId} = this.props.match.params;
+     this.setState({
+          id: this.props.match.params,
+        });
 
     axios
-      .get("http://localhost:9000/getOneRecipe", {
-        params: {
-          id: recipeId
-        }
+      .get(`/detailRecipe/${recipeId}`, {
       })
       .then(res => {
         const recipedata = res.data;
         this.setState({
           recipe: recipedata,
+          id: recipeId,
           image: recipedata.image.data
         });
-        console.log(JSON.stringify(this.state.image));
+        console.log(res);
+        console.log(JSON.stringify(res.data));
       })
       .catch(error => {
         this.setState({
@@ -51,20 +59,33 @@ class DetailRecipe extends React.Component {
       });
   }
 
+   toggle() {
+    this.setState(prevState => ({
+       updateRecipe: !prevState.updateRecipe
+    }));
+  }
+
   render() {
     const { recipe } = this.state;
     return (
       <div>
         {recipe ? (
           <Container>
+
             <Row>
               {" "}
               <Col sm="12">
                 <h1>{recipe.name}</h1>
-              </Col>
+
+              </Col>    
+              <DeleteRecipe ID={this.state.id} />
+                  <Button color="info" onClick={this.toggle}>
+                Update
+              </Button>
             </Row>
 
             <Row>
+              <UpdateRecipe oldRecipe={this.state.recipedata} updateRecipe={this.state.updateRecipe} toggle={this.toggle} />
               <Col sm="4">
                 <Card>
                   <CardHeader>Details</CardHeader>
@@ -94,7 +115,7 @@ class DetailRecipe extends React.Component {
           </Container>
         ) : (
           <div>
-            <Error404Page /> {this.state.error}
+         {this.state.error}
           </div>
         )}
       </div>
