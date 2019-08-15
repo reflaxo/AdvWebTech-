@@ -4,7 +4,7 @@ import DeleteAll from "./DeleteAll";
 import RecipeImage from "./RecipeImage";
 import axios from "axios";
 import { Page, Button } from "tabler-react";
-import { Row, Col } from "reactstrap";
+import { Row, Col, Container } from "reactstrap";
 //Small JSX Component exporting a button that changes looks when it's clicked
 class Recipe extends Component {
   //Constructor for defining start settings in this.state and binding functions
@@ -53,11 +53,11 @@ class Recipe extends Component {
 
     if (this.state.recipes && this.state.recipes.length > 0) {
       return (
-        <div>
+        <Container>
           <Page.Content>
             <Page.Header
               title="Germany"
-              subTitle={"Showing " + this.state.recipes.length + "Recipes"}
+              subTitle={"Showing " + this.state.recipes.length + " Recipes"}
             />
             <Row>
               <Button color="info" onClick={this.toggle}>
@@ -65,9 +65,12 @@ class Recipe extends Component {
               </Button>{" "}
               <DeleteAll />
             </Row>
+            <br/>
 
             <Row>
+              
               {this.state.recipes.map(recipe => (
+                <Col sm="4">
                 <RecipeImage
                   id={recipe._id}
                   key={recipe._id}
@@ -76,11 +79,13 @@ class Recipe extends Component {
                   recipe={recipe.recipe}
                   ingridients={recipe.ingridients}
                 />
+                   </Col>
               ))}
+           
             </Row>
             <NewRecipe addRecipe={this.state.addRecipe} toggle={this.toggle} />
           </Page.Content>
-        </div>
+          </Container>
       );
     }
     return (

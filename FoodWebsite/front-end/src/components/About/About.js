@@ -9,10 +9,11 @@ class About extends React.Component {
       fontsize: '300%',
 
     };
+
     return (
         <div className="App29292">
           <div>
-            <h1 classname="aboutHeading"  style={divStyle}>About us</h1>
+            <h1 className="aboutHeading"  style={divStyle}>About us</h1>
             <div className="textBlackShadow">People also connect to their cultural
               or ethnic group through similar food patterns.
               People from different cultural backgrounds eat different foods.

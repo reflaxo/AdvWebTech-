@@ -9,6 +9,7 @@ var foodControl = require('../controllers/foodController');
  router.get('/getRecipes', foodControl.showRecipes);
  router.get('/getOneRecipe', foodControl.showRecipe);
  router.post('/deleteAll', foodControl.deleteAllRecipes);
+ router.post('/deleteOneRecipe', foodControl.deleteOneRecipe);
 
 
 

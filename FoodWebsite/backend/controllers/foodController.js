@@ -54,7 +54,7 @@ exports.addRecipe = function(req, res) {
           if(error) {
               return response.status(500).send(error);
           }
-          res.send(result.result);
+          res.send("Success");
       });
   
   
@@ -77,14 +77,6 @@ exports.showRecipe = function(req, res, next) {
     const id = mongoose.Types.ObjectId(req.query.id);
     console.log(req.query.id);
 
-        /*foodCollection.find({_id: id}).toArray(function (err, data){
-     
-        if(err) {
-            console.log("logged this" + id +  req +  JSON.stringify(id + req));
-            if (!data){res.status(404).send("data is not found" + id);} 
-        } 
-        else{console.log(data); res.json(data);}
-      });*/
 
       foodCollection.findOne({_id: id}, function(err, data){
         if (err){
@@ -111,11 +103,12 @@ exports.deleteAllRecipes = function(req, res, next) {
 };
 
 exports.deleteOneRecipe = function(req, res, next) {
-  const { id } = req.body;
-  Food.findOneAndDelete(id, err => {
+  console.log(req);
+  const id = mongoose.Types.ObjectId(req.body.data);
+  foodCollection.findOneAndDelete(id, err => {
     if (err) return res.send(err);
-    return res.json({ success: true });
-  });
+    return res.send("success");
+  });   
 };
 
 exports.updateRecipe = function(req, res) {

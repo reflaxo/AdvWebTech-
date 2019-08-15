@@ -12,6 +12,7 @@ import {
   Col,
   Row
 } from "reactstrap";
+import DeleteRecipe from "./DeleteRecipe";
 
 class DetailRecipe extends React.Component {
   constructor(props) {
@@ -19,7 +20,6 @@ class DetailRecipe extends React.Component {
 
     this.state = {
       recipe: {},
-      id: "",
       image: "",
       error: ""
     };
@@ -51,6 +51,7 @@ class DetailRecipe extends React.Component {
       });
   }
 
+
   render() {
     const { recipe } = this.state;
     return (
@@ -63,6 +64,7 @@ class DetailRecipe extends React.Component {
                 <h1>{recipe.name}</h1>
               </Col>
             </Row>
+            <Row><DeleteRecipe id={recipe._id}/> </Row>
 
             <Row>
               <Col sm="4">
