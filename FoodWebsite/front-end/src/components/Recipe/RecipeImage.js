@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import defaultPic from "../Images/defaultPic.png";
 import "tabler-react/dist/Tabler.css";
-import { Grid, GalleryCard } from "tabler-react";
+import { GalleryCard } from "tabler-react";
 import { Link } from "react-router-dom";
 
 class RecipeImage extends Component {

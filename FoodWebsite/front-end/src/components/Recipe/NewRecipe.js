@@ -7,7 +7,10 @@ import {
   Input,
   FormText,
   Col,
-  Row, Modal, ModalHeader, ModalBody, ModalFooter 
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
 } from "reactstrap";
 import axios from "axios";
 
@@ -20,10 +23,10 @@ class NewRecipe extends Component {
       recipe: "",
       name: "",
       file: null,
-      recipes:"",
-      ingridients:"",
-      foodType:"",
-      country:""
+      recipes: "",
+      ingridients: "",
+      foodType: "",
+      country: ""
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.handleCountryChange = this.handleCountryChange.bind(this);
@@ -36,18 +39,17 @@ class NewRecipe extends Component {
 
   componentDidMount() {
     axios
-    .get('http://localhost:9000/getRecipes')
-    .then(res => {
-      const recipeData = res.data.recipes;
-      this.setState({
-        recipes: recipeData,
+      .get("http://localhost:9000/getRecipes")
+      .then(res => {
+        const recipeData = res.data.recipes;
+        this.setState({
+          recipes: recipeData
+        });
+      })
+      .catch(error => {
+        console.log(error);
       });
-    })
-    .catch(error => {
-      console.log(error);
-    });
   }
-
 
   handleFoodTypeChange(e) {
     this.setState({
@@ -62,7 +64,7 @@ class NewRecipe extends Component {
   }
 
   handleImageChange(e) {
-    this.setState({file:e.target.files[0]});
+    this.setState({ file: e.target.files[0] });
   }
   handleNameChange(e) {
     this.setState({
@@ -81,135 +83,154 @@ class NewRecipe extends Component {
     });
   }
 
-  
-
-
-
-    onSubmit(e){
-      e.preventDefault();
-      const formData = new FormData();
-      formData.append('name',this.state.name);
-      formData.append('ingridients',this.state.ingridients);
-      formData.append('recipe',this.state.recipe);
-      formData.append('country',this.state.country);
-      formData.append('foodType',this.state.foodType);
-      formData.append('myImage',this.state.file);
-      const config = {
-          headers: {
-              'content-type': 'multipart/form-data'
-          }
-      };
-      axios.post("http://localhost:9000/addRecipe",formData,config)
-          .then((response) => {
-              alert("The file is successfully uploaded");
-          }).catch((error) => {
-      });
-
+  onSubmit(e) {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", this.state.name);
+    formData.append("ingridients", this.state.ingridients);
+    formData.append("recipe", this.state.recipe);
+    formData.append("country", this.state.country);
+    formData.append("foodType", this.state.foodType);
+    formData.append("myImage", this.state.file);
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data"
+      }
+    };
+    axios
+      .post("http://localhost:9000/addRecipe", formData, config)
+      .then(response => {
+        alert("The file is successfully uploaded");
+      })
+      .catch(error => {});
   }
 
-  //Here is where our HTML-Markup is designed, in this case just our Edit Button
+  //Here is where our HTML-Markup is designed, in this case our popup for adding recipes
   render() {
-    //The value of isEditing is called from the state
-    const { addRecipe } = this.props;
-//Cara: Idea! Replace Answers field with which country - then i change in quiz that if country was chosen, its the correct answer :)
-// Add dropdown for foodType: "Desert/Main/etc... what you want"
     return (
       <div>
-     
-            <Modal isOpen={this.props.addRecipe} toggle={this.props.toggle}>
-            <ModalHeader toggle={this.toggle}>Add New Recipe</ModalHeader>
-            <ModalBody>
-          <div>
-
-            <Form onSubmit={this.onSubmit}>
-              <Col sm={10}>
-                <FormGroup>
-                  <Label for="name">Name</Label>
-                  <Input
-                    value={this.state.name}
-                    onChange={this.handleNameChange}
-                    type="text"
-                    name="name"
-                    id="name"
-                  />
-                </FormGroup>
-               
-                <FormGroup tag="fieldset">
-          <legend>Country</legend>
-          <FormGroup check>
-            <Label check>
-              <Input type="radio" onChange={this.handleCountryChange} name="radio1" value="Iran" checked={this.state.country === 'Iran'}/>{'Iran'}
-       
-            </Label>
-          </FormGroup>
-          <FormGroup check>
-            <Label check>
-              <Input type="radio" onChange={this.handleCountryChange} value="Korea" name="radio1" checked={this.state.country === 'Korea'}/>{'Korea'}
- 
-            </Label>
-          </FormGroup>
-          <FormGroup check disabled>
-            <Label check>
-              <Input type="radio" name="radio1" onChange={this.handleCountryChange} value="Germany" checked={this.state.country === 'Germany'}/>{'Germany '}
-
-            </Label>
-          </FormGroup>
-
-          <FormGroup>
-          <Label for="foodType">FoodType</Label>
-          <Input type="select" onChange={this.handleFoodTypeChange} value={this.state.foodType} name="select" id="foodType">
-            <option>Main</option>
-            <option>Dessert</option>
-            <option>Appetizer</option>
-          </Input>
-        </FormGroup>
-        </FormGroup>
-        <FormGroup>
-                  <Label for="ingridients">Ingridients</Label>
-                  <Input
-                    value={this.state.ingridients}
-                    onChange={this.handleIngridientsChange}
-                    type="textarea"
-                    name="ingr"
-                    id="ingridients"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="exampleText">Recipe</Label>
-                  <Input
-                    value={this.state.recipe}
-                    onChange={this.handleRecipeChange}
-                    type="textarea"
-                    name="text"
-                    id="recipe"
-                  />
-                </FormGroup>
-                <FormGroup row>
-                  <Label for="exampleFile" sm={2}>
-                    Image
-                  </Label>
-                  <Col sm={10}>
+        <Modal isOpen={this.props.addRecipe} toggle={this.props.toggle}>
+          <ModalHeader toggle={this.toggle}>Add New Recipe</ModalHeader>
+          <ModalBody>
+            <div>
+              <Form onSubmit={this.onSubmit}>
+                <Col sm={10}>
+                  <FormGroup>
+                    <Label for="name">Name</Label>
                     <Input
-                      value={this.state.image}
-                      onChange={this.handleImageChange}
-                      type="file"
-                      name="file"
-                      id="image"
+                      value={this.state.name}
+                      onChange={this.handleNameChange}
+                      type="text"
+                      name="name"
+                      id="name"
                     />
-                    <FormText color="muted">
-                      Please upload a picture which shows the food you want to
-                      add to our database
-                    </FormText>
-                  </Col>
-                </FormGroup></Col>
-            </Form>
-          </div>
+                  </FormGroup>
+
+                  <FormGroup tag="fieldset">
+                    <legend>Country</legend>
+                    <FormGroup check>
+                      <Label check>
+                        <Input
+                          type="radio"
+                          onChange={this.handleCountryChange}
+                          name="radio1"
+                          value="Iran"
+                          checked={this.state.country === "Iran"}
+                        />
+                        {"Iran"}
+                      </Label>
+                    </FormGroup>
+                    <FormGroup check>
+                      <Label check>
+                        <Input
+                          type="radio"
+                          onChange={this.handleCountryChange}
+                          value="Korea"
+                          name="radio1"
+                          checked={this.state.country === "Korea"}
+                        />
+                        {"Korea"}
+                      </Label>
+                    </FormGroup>
+                    <FormGroup check disabled>
+                      <Label check>
+                        <Input
+                          type="radio"
+                          name="radio1"
+                          onChange={this.handleCountryChange}
+                          value="Germany"
+                          checked={this.state.country === "Germany"}
+                        />
+                        {"Germany "}
+                      </Label>
+                    </FormGroup>
+
+                    <FormGroup>
+                      <Label for="foodType">FoodType</Label>
+                      <Input
+                        type="select"
+                        onChange={this.handleFoodTypeChange}
+                        value={this.state.foodType}
+                        name="select"
+                        id="foodType"
+                      >
+                        <option>Main</option>
+                        <option>Dessert</option>
+                        <option>Appetizer</option>
+                      </Input>
+                    </FormGroup>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="ingridients">Ingridients</Label>
+                    <Input
+                      value={this.state.ingridients}
+                      onChange={this.handleIngridientsChange}
+                      type="textarea"
+                      name="ingr"
+                      id="ingridients"
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="exampleText">Recipe</Label>
+                    <Input
+                      value={this.state.recipe}
+                      onChange={this.handleRecipeChange}
+                      type="textarea"
+                      name="text"
+                      id="recipe"
+                    />
+                  </FormGroup>
+                  <FormGroup row>
+                    <Label for="exampleFile" sm={2}>
+                      Image
+                    </Label>
+                    <Col sm={10}>
+                      <Input
+                        value={this.state.image}
+                        onChange={this.handleImageChange}
+                        type="file"
+                        name="file"
+                        id="image"
+                      />
+                      <FormText color="muted">
+                        Please upload a picture which shows the food you want to
+                        add to our database
+                      </FormText>
+                    </Col>
+                  </FormGroup>
+                </Col>
+              </Form>
+            </div>
           </ModalBody>
-            <ModalFooter>
-            <Button color="primary" onClick={this.onSubmit}>Submit</Button>{' '}
-            <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+          <ModalFooter>
+            <Button color="primary" onClick={this.onSubmit}>
+              Submit
+            </Button>{" "}
+            <Button color="secondary" onClick={this.props.toggle}>
+              Cancel
+            </Button>
           </ModalFooter>
-              </Modal>
+        </Modal>
       </div>
     );
   }

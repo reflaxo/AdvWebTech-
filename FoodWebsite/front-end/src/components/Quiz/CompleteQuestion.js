@@ -17,20 +17,29 @@ function CompleteQuestion(props) {
       transitionAppear
       transitionAppearTimeout={500}
     >
-
       <div key={props.questionId}>
-
-
         <QuestionCount counter={props.questionId} total={props.questionTotal} />
-        <QuizImage image={props.question.image} recipe={props.question.recipe} />
+        <QuizImage
+          image={props.question.image}
+          recipe={props.question.recipe}
+        />
         <h3>Where is this dish from?</h3>
         <ul className="answerOptions">
-          <AnswerOption 
-          answerName="Korea"   bgColor={props.bgColor}  onAnswerSelected={props.onAnswerSelected}/>
-            <AnswerOption 
-          answerName="Iran"     bgColor={props.bgColor}    onAnswerSelected={props.onAnswerSelected}/>
-             <AnswerOption 
-          answerName="Germany"    bgColor={props.bgColor}  onAnswerSelected={props.onAnswerSelected} />
+          <AnswerOption
+            answerName="Korea"
+            bgColor={props.bgColor}
+            onAnswerSelected={props.onAnswerSelected}
+          />
+          <AnswerOption
+            answerName="Iran"
+            bgColor={props.bgColor}
+            onAnswerSelected={props.onAnswerSelected}
+          />
+          <AnswerOption
+            answerName="Germany"
+            bgColor={props.bgColor}
+            onAnswerSelected={props.onAnswerSelected}
+          />
         </ul>
       </div>
     </ReactCSSTransitionGroup>

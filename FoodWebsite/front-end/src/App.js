@@ -14,9 +14,9 @@ class App extends Component {
             <header>
               <FoodNavbar />
             </header>
-            <body>
+       
                         <RT_Footer/>
-                        </body>
+                
             <div />
           </div>
         </Router>

@@ -18,6 +18,13 @@
   color: white;
 }
 
+.toast-height: 48px !default;
+.toast-width: 540px;
+.toast-color: #eeeeee !default;
+.toast-text-color: #212121 !default;
+
+.secondary-color: #00e676;
+
 .NavbarStyle{
   background-color: lightyellow;
 }

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import NewRecipe from "./NewRecipe";
-import DeleteAll from "./DeleteAll";
+import DeleteAll from "./DeleteAllOld";
 import RecipeImage from "./RecipeImage";
 import axios from "axios";
 import { Page, Button } from "tabler-react";
@@ -8,7 +8,7 @@ import { Row, Col, Container } from "reactstrap";
 //Small JSX Component exporting a button that changes looks when it's clicked
 class Recipe extends Component {
   //Constructor for defining start settings in this.state and binding functions
-
+ 
   constructor(props) {
     //properties given to us by other components are connected with "props"
     super(props);
@@ -19,24 +19,29 @@ class Recipe extends Component {
     //We want our Edit button to show "off"/false
     this.state = {
       addRecipe: false,
-      recipes: ""
+      recipes: "",
+      country:""
     };
   }
 
   componentDidMount() {
+    const {Country} = this.props.match.params;
     axios
-      .get("http://localhost:9000/getRecipes")
+      .get(`/getRecipes/${Country}`)
       .then(res => {
         const recipesdata = res.data;
         this.setState({
-          recipes: recipesdata
+          recipes: recipesdata,
+          country: Country
         });
         console.log(res);
       })
       .catch(error => {
         console.log(error);
       });
+  
   }
+
 
   toggle() {
     this.setState(prevState => ({
@@ -44,11 +49,10 @@ class Recipe extends Component {
     }));
   }
 
+
   //Here is where our HTML-Markup is designed, in this case just our Edit Button
   render() {
-    //The value of isEditing is called from the state
-    //Our text is called with this.props;
-    //const{text}= this.props.text;
+
     //Here starts our HTML, Javascript is marked with "{}" brackets.
 
     if (this.state.recipes && this.state.recipes.length > 0) {
@@ -95,7 +99,6 @@ class Recipe extends Component {
               <Button color="info" onClick={this.toggle}>
                 Add Recipe
               </Button>{" "}
-              <DeleteAll />
             </Row>
 
        Waiting for recipe information...

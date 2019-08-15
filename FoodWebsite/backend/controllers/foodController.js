@@ -62,8 +62,10 @@ exports.addRecipe = function(req, res) {
   };
 //Shows Recipe for Quiz and Country
 exports.showRecipes = function(req, res) {
+  const c = req.params.country;
+      console.log(c);
  
-  foodCollection.find({}).toArray(function(err, data) {
+  foodCollection.find({"country": c}).toArray(function(err, data) {
     if(err) {
         console.error(JSON.stringify(err));
         res.status(404).send("data is not found");
@@ -72,22 +74,21 @@ exports.showRecipes = function(req, res) {
 });
 };
 
+
 //Shows Single Recipe
 exports.showRecipe = function(req, res, next) {
-    const id = mongoose.Types.ObjectId(req.query.id);
-    console.log(req.query.id);
-
-
+    const id = mongoose.Types.ObjectId(req.params.id);
+   
       foodCollection.findOne({_id: id}, function(err, data){
         if (err){
             console.log("errr",err);
             if (!data){res.status(404).send("data is not found" + id);}
         }else{
+            console.log("found" + data);
             res.json(data);
         }
 
 });
-
   };
 
 // this is our delete method
@@ -102,13 +103,15 @@ exports.deleteAllRecipes = function(req, res, next) {
   });
 };
 
-exports.deleteOneRecipe = function(req, res, next) {
-  console.log(req);
-  const id = mongoose.Types.ObjectId(req.body.data);
-  foodCollection.findOneAndDelete(id, err => {
+exports.deleteRecipe = function(req, res, next) {
+
+    const id = mongoose.Types.ObjectId(req.body.params.id);
+
+
+    foodCollection.deleteOne({_id: id}, err => {
     if (err) return res.send(err);
     return res.send("success");
-  });   
+  });
 };
 
 exports.updateRecipe = function(req, res) {
