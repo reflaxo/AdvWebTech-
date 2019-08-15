@@ -8,18 +8,19 @@ class App extends Component {
 
   render() {
     return (
+
       <div>
-        <Router>
+       
           <div className="App">
             <header>
               <FoodNavbar />
             </header>
-       
+            <body>
                         <RT_Footer/>
-                
+                        </body>
             <div />
           </div>
-        </Router>
+       
       </div>
     );
   }

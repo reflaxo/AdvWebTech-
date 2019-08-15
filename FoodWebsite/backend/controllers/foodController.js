@@ -24,11 +24,13 @@ const upload = multer({
 exports.addRecipe = function(req, res) {
     //Transforms the Image to Base64
     upload(req, res, err => {
-      if (req.file.path) {
+      if (req.file) {
         var img = fs.readFileSync(req.file.path);
         var encode_image = img.toString("base64");
+        var mimetype = req.file.mimetype;
       } else {
         var encode_image = "";
+        var mimetype = "";
       }
   
       //Logs Data
@@ -39,7 +41,7 @@ exports.addRecipe = function(req, res) {
       var newFoodEntry = {
         name: req.body.name,
         image: {
-          contentType: req.file.mimetype,
+          contentType: mimetype,
           data: new Buffer(encode_image, "base64")
         },
         country: req.body.country,
@@ -54,7 +56,7 @@ exports.addRecipe = function(req, res) {
           if(error) {
               return response.status(500).send(error);
           }
-          res.send("Success");
+          res.send(result.result);
       });
   
   

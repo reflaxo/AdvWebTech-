@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import DeleteRecipe from "./DeleteRecipeOld";
+import DeleteRecipe from "./DeleteRecipe";
 import UpdateRecipe from "./UpdateRecipe";
 import {
   Container,
@@ -24,6 +24,7 @@ class DetailRecipe extends React.Component {
 
     this.state = {
       recipe: {},
+      id: "",
       image: "",
       error: "",
       updateRecipe: false,
@@ -77,12 +78,11 @@ class DetailRecipe extends React.Component {
                 <h1>{recipe.name}</h1>
 
               </Col>    
-              <DeleteRecipe ID={this.state.id} />
+              <DeleteRecipe ID={this.state.id} country={recipe.country} />
                   <Button color="info" onClick={this.toggle}>
                 Update
               </Button>
             </Row>
-            <Row><DeleteRecipe id={recipe._id}/> </Row>
 
             <Row>
               <UpdateRecipe oldRecipe={this.state.recipedata} updateRecipe={this.state.updateRecipe} toggle={this.toggle} />

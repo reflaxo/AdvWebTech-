@@ -1,21 +1,22 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import update from 'react-addons-update';
 //import quizQuestions from "./quizQuestions";
-import CompleteQuestion from "./CompleteQuestion";
-import axios from "axios";
-import Result from "./Result";
-import "./Quiz.css";
+import CompleteQuestion from './CompleteQuestion';
+import axios from 'axios';
+import Result from './Result';
+import './Quiz.css';
 
 class QuizApp extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      backgroundColor: "white",
+      backgroundColor: 'white',
       quizQuestions: [],
       counter: 0,
-      answerOptions: ["Iran", "Korea", "Germany"],
-      correctAnswersCounter: 0,
-      result: ""
+      answerOptions:["Iran", "Korea", "Germany"],
+      correctAnswersCounter:0,
+      result: ''
     };
 
     this.handleAnswerSelected = this.handleAnswerSelected.bind(this);
@@ -24,19 +25,19 @@ class QuizApp extends Component {
   //Gets Data from Backend
   componentDidMount() {
     axios
-      .get("http://localhost:9000/getRecipes")
+      .get('/getRecipes')
       .then(res => {
         const recipes = res.data;
         const shuffledRecipes = this.shuffleArray(recipes);
         this.setState({
-          quizQuestions: shuffledRecipes
+          quizQuestions: shuffledRecipes,
         });
       })
       .catch(err => {
         console.log(err);
       });
   }
-  //Shuffles the Questions
+//Shuffles the Questions
   shuffleArray(array) {
     var currentIndex = array.length,
       temporaryValue,
@@ -61,16 +62,20 @@ class QuizApp extends Component {
     //Handles what happens when you select an answer
     const givenAnswer = event.currentTarget.value;
     const quizLength = this.state.quizQuestions.length;
-    const questionCount = this.state.counter + 1;
+    const questionCount = this.state.counter+1; 
 
     this.setState({
       answersCount: this.state.answersCount + 1,
-      answer: givenAnswer
+      answer: givenAnswer 
     });
 
-    if (this.state.quizQuestions[this.state.counter].country !== givenAnswer) {
+    console.log("required answer"+ JSON.stringify(this.state.quizQuestions[this.state.counter]) + "given" + givenAnswer);
+    if (
+      this.state.quizQuestions[this.state.counter].country !==
+      givenAnswer 
+    ) {
       this.setState({
-        backgroundColor: "red"
+        backgroundColor: 'red'
       });
       if (questionCount < quizLength) {
         setTimeout(() => this.setNextQuestion(), 300);
@@ -79,8 +84,8 @@ class QuizApp extends Component {
       }
     } else {
       this.setState({
-        backgroundColor: "green",
-        correctAnswersCounter: this.state.correctAnswersCounter + 1
+        backgroundColor: 'green',
+        correctAnswersCounter: this.state.correctAnswersCounter+1,
       });
       if (questionCount < quizLength) {
         setTimeout(() => this.setNextQuestion(), 300);
@@ -92,15 +97,15 @@ class QuizApp extends Component {
 
   setNextQuestion() {
     this.setState(prevState => ({
-      counter: prevState.counter + 1,
-      questionId: prevState.questionId + 1,
-      backgroundColor: "white",
-      answer: ""
+      counter: prevState.counter +1,
+      questionId: prevState.questionId +1 ,
+      backgroundColor: 'white',
+      answer: ''
     }));
   }
   setResults() {
-    console.log("got to results" + this.state.correctAnswersCounter);
-    this.setState({ result: String(this.state.correctAnswersCounter) });
+    console.log("got to results" +this.state.correctAnswersCounter );
+    this.setState({ result: String(this.state.correctAnswersCounter)});
   }
 
   renderQuiz() {
@@ -112,9 +117,11 @@ class QuizApp extends Component {
 
     return (
       <CompleteQuestion
-        question={currentQuestion}
+      question={currentQuestion}
+       
         bgColor={this.state.backgroundColor}
         questionId={counter}
+   
         questionTotal={this.state.quizQuestions.length}
         onAnswerSelected={this.handleAnswerSelected}
       />
@@ -122,12 +129,7 @@ class QuizApp extends Component {
   }
 
   renderResult() {
-    return (
-      <Result
-        quizResult={this.state.result}
-        recipes={this.state.quizQuestions}
-      />
-    );
+    return <Result quizResult={this.state.result} recipes={this.state.quizQuestions} />;
   }
 
   render() {

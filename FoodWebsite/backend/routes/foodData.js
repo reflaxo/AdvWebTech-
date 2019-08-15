@@ -4,12 +4,10 @@ var foodControl = require('../controllers/foodController');
 
 
  router.post('/addRecipe', foodControl.addRecipe);
- router.get('/addRecipe', foodControl.addRecipe);
- router.post('/updateRecipe/:id', foodControl.updateRecipe);
+ router.post('/updateRecipe/:id', foodControl.updateRecipe );
  router.post('/deleteRecipe/:id', foodControl.deleteRecipe);
  router.get('/getRecipes/:country', foodControl.showRecipes);
  router.get('/detailRecipe/:id', foodControl.showRecipe);
- router.post('/deleteAll', foodControl.deleteAllRecipes);
- router.post('/deleteOneRecipe', foodControl.deleteOneRecipe);
+ //router.post('/deleteAll', foodControl.deleteAllRecipes);
 
 module.exports = router;

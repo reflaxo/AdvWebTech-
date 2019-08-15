@@ -9,7 +9,6 @@ class Login extends Component {
   constructor() {
     super();
     
-   super();
     this.state = {
       email: "",
       password: "",
@@ -56,8 +55,11 @@ onChange = e => {
  
     const { errors } = this.state;
     return (
+
+   
  
             <div className="container">
+             
         <div style={{ marginTop: "4rem" }} className="row">
           <div className="col s8 offset-s2">
             <Link to="/" className="btn-flat waves-effect">

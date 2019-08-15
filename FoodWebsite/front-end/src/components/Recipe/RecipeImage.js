@@ -1,19 +1,21 @@
 import React, { Component } from "react";
 import defaultPic from "../Images/defaultPic.png";
+import DetailRecipe from "./DetailRecipe";
 import "tabler-react/dist/Tabler.css";
-import { GalleryCard } from "tabler-react";
+import { Grid, GalleryCard } from "tabler-react";
+import { Route } from "react-router";
 import { Link } from "react-router-dom";
+
 
 class RecipeImage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       hover: false,
-      imageString: "",
-      heartCount:0
+      imageString: ""
     };
 
-    this.countHearts = this.countHearts.bind(this);
+
   }
   componentDidMount() {
     //If there is an image it will transform the image to a picture
@@ -21,9 +23,7 @@ class RecipeImage extends Component {
       this.setState({ imageString: this.props.image.data });
     }
   }
-  countHearts() {
-    this.setState({ heartCount: this.state.heartCount + 1});
-  }
+
 
   //Imports the correct picture if available, else renders the defaultPicture
   render() {

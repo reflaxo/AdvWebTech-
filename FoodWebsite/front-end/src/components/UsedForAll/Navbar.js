@@ -78,6 +78,12 @@ export default class FoodNavbar extends React.Component {
               <NavItem>
                 <NavLink href="/About/">About Us</NavLink>
               </NavItem>
+              <NavItem>
+                <NavLink href="/Register/">Sign Up</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/Login/">Login</NavLink>
+              </NavItem>
 
 
         
@@ -88,8 +94,8 @@ export default class FoodNavbar extends React.Component {
         <Route path="/about/" component={About} />
         <Route path="/contact/" component={Contact} />
         <Route path={`/Recipe/:Country`}  component={Recipe} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/login" component={Login} />
+        <Route exact path="/Register" component={Register} />
+        <Route exact path="/Login" component={Login} />
         <Route path={`/detailRecipe/:recipeId`} render={(props) => <DetailRecipe {...props} name={props.name} />} />
         <Route path="/quiz" render={() => <QuizApp totalQuestions={10} />}/>
         </Router>

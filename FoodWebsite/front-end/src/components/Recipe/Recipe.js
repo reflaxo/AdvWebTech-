@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import NewRecipe from "./NewRecipe";
-import DeleteAll from "./DeleteAllOld";
+import DeleteAll from "./DeleteAll";
 import RecipeImage from "./RecipeImage";
 import axios from "axios";
 import { Page, Button } from "tabler-react";
 import { Row, Col, Container } from "reactstrap";
+//Small JSX Component exporting a button that changes looks when it's clicked
+
+
 //Small JSX Component exporting a button that changes looks when it's clicked
 class Recipe extends Component {
   //Constructor for defining start settings in this.state and binding functions
@@ -53,25 +56,27 @@ class Recipe extends Component {
   //Here is where our HTML-Markup is designed, in this case just our Edit Button
   render() {
 
-    //Here starts our HTML, Javascript is marked with "{}" brackets.
-
+   
     if (this.state.recipes && this.state.recipes.length > 0) {
       return (
         <Container>
           <Page.Content>
             <Page.Header
-              title="Germany"
+              title={this.state.country}
               subTitle={"Showing " + this.state.recipes.length + " Recipes"}
             />
             <Row>
               <Button color="info" onClick={this.toggle}>
                 Add Recipe
-              </Button>{" "}
+              </Button>
               <DeleteAll />
+       
             </Row>
+            <Row>     <NewRecipe addRecipe={this.state.addRecipe} toggle={this.toggle} /></Row>
             <br/>
 
             <Row>
+           
               
               {this.state.recipes.map(recipe => (
                 <Col sm="4">
@@ -87,7 +92,7 @@ class Recipe extends Component {
               ))}
            
             </Row>
-            <NewRecipe addRecipe={this.state.addRecipe} toggle={this.toggle} />
+          
           </Page.Content>
           </Container>
       );
@@ -99,6 +104,7 @@ class Recipe extends Component {
               <Button color="info" onClick={this.toggle}>
                 Add Recipe
               </Button>{" "}
+              <DeleteAll />
             </Row>
 
        Waiting for recipe information...

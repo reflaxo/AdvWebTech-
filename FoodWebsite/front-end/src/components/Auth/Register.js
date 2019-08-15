@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
+import { Form, Card, Grid} from "tabler-react";
+
 
 class Register extends Component {
   constructor() {
@@ -15,115 +17,88 @@ class Register extends Component {
     };
   }
 
-
-
-onChange = e => {
+  onChange = e => {
     this.setState({ [e.target.id]: e.target.value });
   };
 
+  onSubmit = e => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", this.state.name);
+    formData.append("email", this.state.email);
+    formData.append("recipe", this.state.password);
+    formData.append("country", this.state.password2);
 
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data"
+      }
+    };
 
-  onSubmit = (e) => {
-   
+    axios.post("/auth/register", formData, config).then(result => {
+      console.log(formData);
+      this.props.history.push("/login");
+    });
+  };
 
-      e.preventDefault();
-      const formData = new FormData();
-      formData.append('name',this.state.name);
-      formData.append('email',this.state.email);
-      formData.append('recipe',this.state.password);
-      formData.append('country',this.state.password2);
-  
-      const config = {
-          headers: {
-              'content-type': 'multipart/form-data'
-          }
-      };
-
-    axios.post('/auth/register', formData,config)
-      .then((result) => {
-      	console.log(formData);
-        this.props.history.push("/login")
-      });
-  }
-
-
-
-render() {
+  render() {
     const { errors } = this.state;
-return (
+    return (
       <div className="container">
-        <div className="row">
-          <div className="col s8 offset-s2">
-            <Link to="/" className="btn-flat waves-effect">
-              <i className="material-icons left">keyboard_backspace</i> Back to
-              home
-            </Link>
-            <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-              <h4>
-                <b>Register</b> below
-              </h4>
-              <p className="grey-text text-darken-1">
-                Already have an account? <Link to="/login">Log in</Link>
-              </p>
-            </div>
-            <form noValidate onSubmit={this.onSubmit}>
-              <div className="input-field col s12">
-                <input
-                  onChange={this.onChange}
-                  value={this.state.name}
-                  error={errors.name}
-                  id="name"
-                  type="text"
-                />
-                <label htmlFor="name">Name</label>
-              </div>
-              <div className="input-field col s12">
-                <input
-                  onChange={this.onChange}
-                  value={this.state.email}
-                  error={errors.email}
-                  id="email"
-                  type="email"
-                />
-                <label htmlFor="email">Email</label>
-              </div>
-              <div className="input-field col s12">
-                <input
-                  onChange={this.onChange}
-                  value={this.state.password}
-                  error={errors.password}
-                  id="password"
-                  type="password"
-                />
-                <label htmlFor="password">Password</label>
-              </div>
-              <div className="input-field col s12">
-                <input
-                  onChange={this.onChange}
-                  value={this.state.password2}
-                  error={errors.password2}
-                  id="password2"
-                  type="password"
-                />
-                <label htmlFor="password2">Confirm Password</label>
-              </div>
-              <div className="col s12" style={{ paddingLeft: "11.250px" }}>
-                <button
-                  style={{
-                    width: "150px",
-                    borderRadius: "3px",
-                    letterSpacing: "1.5px",
-                    marginTop: "1rem"
-                  }}
-                  type="submit"
-                  className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-                >
-                  Sign up
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <Grid.Row>
+          <h4>
+            <b>Welcome</b>
+          </h4>
+        </Grid.Row>
+        <Grid.Row alignItems="center">
+          <p>
+            Already have an account? <Link to="/login">Log in</Link>
+          </p>
+        </Grid.Row>
+        <Grid.Col xl={4} lg={8} md={4} sm={10} xs={8}>
+        <Card title="Register below">
+          
+        <Grid.Col alignItems="center" xl={4} lg={8} md={4} sm={10} xs={8}>
+        <Form  >
+    
+            <Form.Group label="Username" isRequired>
+              <Form.Input
+                icon="user"
+                placeholder="Username"
+                onChange={this.onChange}
+                value={this.state.name}
+                error={errors.name}
+                id="name"
+                type="text"
+              />
+            </Form.Group>
+       
+    
+            <Form.Group label="Password" isRequired>
+              <Form.Input
+                name="password"
+                placeholder="Password..."
+                type="password"
+              />
+            </Form.Group>
+      
+            <Form.Group label="Username" isRequired>
+              <Form.Input
+                name="passwordcheck"
+                placeholder="Password..."
+                type="passwordcheck"
+              />
+            </Form.Group>
+      
+        </Form>
+        </Grid.Col>
+        </Card>
+        </Grid.Col>
+        
+        <Link to="/">
+          <Grid.Row>
+        <i className="fa fa-chevron-left"></i><p>    Back to home</p></Grid.Row>
+        </Link>
       </div>
     );
   }

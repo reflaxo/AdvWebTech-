@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import QuizImage from "./QuizImage";
 import { Link } from "react-router-dom";
-import { Row } from "reactstrap";
+import {Row} from "reactstrap";
 
 function Result(props) {
   return (
@@ -19,20 +19,21 @@ function Result(props) {
       <div>
         You had <strong>{props.quizResult} correct Answers</strong>! The
         following recipes appeared in your Quiz:
-        <Row>
+		<Row>
           {props.recipes.map(recipe => (
             <div>
-              <QuizImage image={recipe.image} name={recipe.country} />
-              <Link
-                to={{
-                  pathname: `/detailRecipe/${recipe._id}`
-                }}
-              >
-                {recipe.name}
-              </Link>
+    
+                <QuizImage image={recipe.image} name={recipe.country} />
+				<Link to={{
+                      pathname: `/detailRecipe/${recipe._id}`,
+                      }}>{recipe.name}
+                  
+
+                  
+                    </Link>
             </div>
           ))}
-        </Row>
+		 </Row>
       </div>
     </ReactCSSTransitionGroup>
   );
