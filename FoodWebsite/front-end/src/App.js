@@ -22,10 +22,10 @@ class App extends Component {
        
           <div className="App">
             <header>
-              <FoodNavbar />
+              <FoodNavbar/>
             </header>
            
-                        <RT_Footer/>
+            <RT_Footer/>
                       
             <div />
           </div>

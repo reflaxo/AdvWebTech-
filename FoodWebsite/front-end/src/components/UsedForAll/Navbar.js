@@ -21,7 +21,8 @@ import Contact from  "../Contact/Contact.js";
 import Home from "../Home/Home";
 import Register from "../Auth/Register";
 import Login from "../Auth/Login";
-import {authStatus, logout} from "./authStatus";
+
+
 
 
 
@@ -32,18 +33,39 @@ export default class FoodNavbar extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       isOpen: false,
+      loggedIn:false,
+      name: ""
     };
+
+    this.logout = this.logout.bind(this);
+    this.updateUser = this.updateUser.bind(this);
   }
   componentDidUpdate(){
-    console.log(authStatus);
-   /*if(localStorage.getItem('jwtToken')){
+    console.log(this.state.loggedIn)
+
+   if(localStorage.getItem('jwtToken')){
      if(this.state.loggedIn=false){
     this.setState({
       loggedIn:true
     });
-  }*/
+  }
    }
+  }
   
+  logout(){
+    localStorage.removeItem('jwtToken');
+    window.location.reload();
+  }
+
+
+  updateUser= (props) => {
+    console.log("got here" + props.loggedIn + props.name);
+    this.setState({     
+      loggedIn: props.loggedIn,
+      name: props.name})
+
+      console.log(this.state.loggedIn)
+}
   
   toggle() {
     this.setState({
@@ -62,7 +84,7 @@ export default class FoodNavbar extends React.Component {
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <NavItem>
-              {authStatus?(<div>Your are logged in</div>):(
+              {this.state.loggedIn?(<div>Hi {this.state.name}</div>):(
                  <div><Link to="/Login/">Login</Link></div>
               )}
               </NavItem>
@@ -99,7 +121,7 @@ export default class FoodNavbar extends React.Component {
                 <Link to="/About/">About Us</Link>
               </NavItem>
               <NavItem>
-              {authStatus?(<div><Link onClick={logout} to="/">Logout</Link></div>):(
+              {this.state.loggedIn?(<div><Link onClick={this.logout} to="/">Logout</Link></div>):(
                  <div>   <Link to="/Register/">Sign Up</Link></div>
               )}
              
@@ -118,7 +140,7 @@ export default class FoodNavbar extends React.Component {
         <Route path={`/Recipe/:Country`}  component={Recipe} />
            <Route path="/contact/" component={Contact} />
         <Route exact path="/Register" component={Register} />
-        <Route exact path="/Login" component={Login} />
+        <Route exact path="/Login" render={(props) => <Login {...props} updateUser={this.updateUser} />}  />
         <Route path={`/detailRecipe/:recipeId`} render={(props) => <DetailRecipe {...props} name={props.name} />} />
         <Route path="/quiz" render={() => <QuizApp totalQuestions={10} />}/>
         </Router>

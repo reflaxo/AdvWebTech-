@@ -40,6 +40,11 @@ class Login extends Component {
         localStorage.setItem("jwtToken", result.data.token);
         this.setState({ message: "" });
         this.setState({ success: true });
+
+        this.props.updateUser({
+          loggedIn: true,
+          name: this.state.name
+        })
         setTimeout(
           function() {
             this.setState({ success: false });
