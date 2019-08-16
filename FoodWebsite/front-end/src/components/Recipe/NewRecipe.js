@@ -51,7 +51,7 @@ class NewRecipe extends Component {
       formData.append('country',this.state.country);
       formData.append('foodType',this.state.foodType);
       formData.append('myImage',this.state.file);
-   
+      console.log(formData);
       const config = {
           headers: {
               'content-type': 'multipart/form-data'

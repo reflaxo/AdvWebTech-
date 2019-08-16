@@ -7,14 +7,12 @@ const keys = require("../config/keys");
 const validateRegisterInput = require("../validation/register");
 const validateLoginInput = require("../validation/login");
 // Load User model
-const User = require("../models/User");
+const User= require("../models/userModel");
 
-// @route POST api/users/register
-// @desc Register user
-// @access Public
+
+
 router.post("/register", (req, res) => {
-	console.log("Came to register")
-console.log(req)
+console.log("Came to register")
   // Form validation
 const { errors, isValid } = validateRegisterInput(req.body);
 
@@ -23,13 +21,12 @@ const { errors, isValid } = validateRegisterInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
   }
-UserCollection.findOne({ email: req.body.email }).then(user => {
+userCollection.findOne({ name: req.body.name }).then(user => {
     if (user) {
-      return res.status(400).json({ email: "Email already exists" });
+      return res.status(400).json("Name already exists - please choose another one");
     } else {
       const newUser = new User({
         name: req.body.name,
-        email: req.body.email,
         password: req.body.password
       });
 // Hash password before saving in database
@@ -37,10 +34,14 @@ UserCollection.findOne({ email: req.body.email }).then(user => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) throw err;
           newUser.password = hash;
-          newUser
-            .save()
-            .then(user => res.json(user))
-            .catch(err => console.log(err));
+         
+            userCollection.insert(newUser, (error, result) => {
+              if(error) {
+                  return  response.status(500).send(error);
+              }
+              console.log(result);
+              res.send(result.result);
+          });
         });
       });
     }
@@ -48,23 +49,24 @@ UserCollection.findOne({ email: req.body.email }).then(user => {
 });
 
 
-// @route POST api/users/login
-// @desc Login user and return JWT token
-// @access Public
+
 router.post("/login", (req, res) => {
   // Form validation
+  console.log(req.body);
+
+  
 const { errors, isValid } = validateLoginInput(req.body);
 // Check validation
   if (!isValid) {
     return res.status(400).json(errors);
   }
-const email = req.body.email;
+
   const password = req.body.password;
 // Find user by email
-  UserCollection.findOne({ email }).then(user => {
+  userCollection.findOne({ name: req.body.name }).then(user => {
     // Check if user exists
     if (!user) {
-      return res.status(404).json({ emailnotfound: "Email not found" });
+      return   res.status(404).json({ usernotfound: "User not found" });
     }
 // Check password
     bcrypt.compare(password, user.password).then(isMatch => {
@@ -79,18 +81,16 @@ const email = req.body.email;
         jwt.sign(
           payload,
           keys.secretOrKey,
-          {
-            expiresIn: 31556926 // 1 year in seconds
-          },
           (err, token) => {
             res.json({
               success: true,
-              token: "Bearer " + token
+              token: "JWT " + token
             });
           }
         );
       } else {
-        return res
+        return  console.log("wrong PW");
+        res
           .status(400)
           .json({ passwordincorrect: "Password incorrect" });
       }

@@ -39,6 +39,11 @@ app.use(
     extended: false
   })
 );
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+// parse application/json
 app.use(bodyParser.json());
 // Passport middleware
 app.use(passport.initialize());

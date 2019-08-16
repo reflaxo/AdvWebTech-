@@ -1,10 +1,10 @@
 //Import the Task's model
 var multer = require("multer");
 //Task 3.1 -  connect the model to the controller
-var Food = require("../models/foodModel");
+const Food = require("../models/foodModel");
 const path = require("path");
 var mongoose = require("mongoose");
-var Food = mongoose.model("Food");
+//const Food = mongoose.model("Food");
 //const upload = multer({ storage: storage });
 fs = require("fs");
 
@@ -21,7 +21,22 @@ const upload = multer({
   limits: { fileSize: 1000000 }
 }).single("myImage");
 
+getToken = function (headers) {
+  if (headers && headers.authorization) {
+    var parted = headers.authorization.split(' ');
+    if (parted.length === 2) {
+      return parted[1];
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
+};
+
 exports.addRecipe = function(req, res) {
+   
+
     //Transforms the Image to Base64
     upload(req, res, err => {
       if (req.file) {
@@ -62,6 +77,7 @@ exports.addRecipe = function(req, res) {
   
     });
   };
+
 //Shows Recipe for Quiz and Country
 exports.showRecipes = function(req, res) {
   const c = req.params.country;
@@ -79,6 +95,9 @@ exports.showRecipes = function(req, res) {
 
 //Shows Single Recipe
 exports.showRecipe = function(req, res, next) {
+  console.log(req);
+  var token = getToken(req.headers);
+  if (token) {
     const id = mongoose.Types.ObjectId(req.params.id);
    
       foodCollection.findOne({_id: id}, function(err, data){
@@ -92,6 +111,7 @@ exports.showRecipe = function(req, res, next) {
 
 });
   };
+};
 
 // this is our delete method
 // this method removes existing data in our database

@@ -1,7 +1,9 @@
 import React from "react";
 import axios from "axios";
+import decode from "jwt-decode";
 import DeleteRecipe from "./DeleteRecipe";
 import UpdateRecipe from "./UpdateRecipe";
+import AxiosConfig from "../UsedForAll/AxiosConfig";
 import {
   Container,
   Card,
@@ -38,9 +40,16 @@ class DetailRecipe extends React.Component {
           id: this.props.match.params,
         });
 
-    axios
-      .get(`/detailRecipe/${recipeId}`, {
-      })
+       /* getConfirm = () => {
+          // Using jwt-decode npm package to decode the token
+          let answer = decode(localStorage.getItem("jwtToken"));
+          console.log("Received answer!" + answer);
+          return answer;
+        };*/
+
+
+AxiosConfig
+      .get(`/detailRecipe/${recipeId}`)
       .then(res => {
         const recipedata = res.data;
         this.setState({

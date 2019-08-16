@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import AlertNote from "../UsedForAll/AlertNote.js";
+import { withRouter } from "react-router-dom";
 
 class Login extends Component {
 
@@ -10,9 +12,11 @@ class Login extends Component {
     super();
     
     this.state = {
-      email: "",
       password: "",
-      errors: {}
+      name:"",
+      errors: "",
+      success: false,
+      error: false
     };
   }
 
@@ -22,33 +26,31 @@ class Login extends Component {
     this.setState(state);
   }
 
-onChange = e => {
-    this.setState({ [e.target.id]: e.target.value });
-  };
-
-
 
   onSubmit = (e) => {
     e.preventDefault();
 
    
     const userData = {
-      email: this.state.email,
+      name: this.state.name,
       password: this.state.password
     };
+    console.log(userData);
 
-
-    axios.post('auth/login', {userData})
+    axios.post('/auth/login', userData)
       .then((result) => {
+        console.log(result);
         localStorage.setItem('jwtToken', result.data.token);
         this.setState({ message: '' });
         this.props.history.push('/')
       })
       .catch((error) => {
-        if(error.response.status === 401) {
-          this.setState({ message: 'Login failed. Username or password not match' });
-        }
-      });
+        console.log(error);
+          this.setState({error: true, errors:error.message})
+          setTimeout(function(){
+               this.setState({error:false});
+          }.bind(this),10000); 
+    });
   }
 
   render() {
@@ -59,7 +61,8 @@ onChange = e => {
    
  
             <div className="container">
-             
+              <AlertNote type="success" text="Registration was successful" success={this.state.success}/>
+        <AlertNote type="danger" text={this.state.errors} success={this.state.error}/>
         <div style={{ marginTop: "4rem" }} className="row">
           <div className="col s8 offset-s2">
             <Link to="/" className="btn-flat waves-effect">
@@ -78,9 +81,10 @@ onChange = e => {
               <div className="input-field col s12">
                 <input
                   onChange={this.onChange}
-                  value={this.state.username}
-                  error={errors.username}
-                  id="usernam"
+                  value={this.state.name}
+                  id="username"
+                  name="name"
+            
                   type="username"
                 />
                 <label htmlFor="username">username</label>
@@ -89,7 +93,7 @@ onChange = e => {
                 <input
                   onChange={this.onChange}
                   value={this.state.password}
-                  error={errors.password}
+                  name="password"
                   id="password"
                   type="password"
                 />
@@ -117,4 +121,4 @@ onChange = e => {
   }
 }
 
-export default Login;
+export default withRouter(Login);

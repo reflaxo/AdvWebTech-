@@ -5,14 +5,9 @@ var router = express.Router();
 module.exports = function validateLoginInput(data) {
   let errors = {};
 // Convert empty fields to an empty string so we can use validator functions
-  data.email = !isEmpty(data.email) ? data.email : "";
+  data.email = !isEmpty(data.email) ? data.name : "";
   data.password = !isEmpty(data.password) ? data.password : "";
-// Email checks
-  if (Validator.isEmpty(data.email)) {
-    errors.email = "Email field is required";
-  } else if (!Validator.isEmail(data.email)) {
-    errors.email = "Email is invalid";
-  }
+
 // Password checks
   if (Validator.isEmpty(data.password)) {
     errors.password = "Password field is required";
@@ -30,12 +25,12 @@ router.post('/api/account/signin', (req, res, next) => {
       password
     } = body;
     let {
-      email
+      name
     } = body;
-    if (!email) {
+    if (!name) {
       return res.send({
         success: false,
-        message: 'Error: Email cannot be blank.'
+        message: 'Error: Name cannot be blank.'
       });
     }
     if (!password) {
@@ -44,10 +39,10 @@ router.post('/api/account/signin', (req, res, next) => {
         message: 'Error: Password cannot be blank.'
       });
     }
-    email = email.toLowerCase();
-    email = email.trim();
-    User.find({
-      email: email
+    name = name.toLowerCase();
+    name = name.trim();
+    userCollection.find({
+      name: name
     }, (err, users) => {
       if (err) {
         console.log('err 2:', err);
