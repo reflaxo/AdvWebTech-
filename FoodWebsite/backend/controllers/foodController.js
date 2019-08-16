@@ -81,6 +81,7 @@ exports.addRecipe = function(req, res) {
 //Shows Recipe for Quiz and Country
 exports.showRecipes = function(req, res) {
   const c = req.params.country;
+  if(c != null){
       console.log(c);
  
   foodCollection.find({"country": c}).toArray(function(err, data) {
@@ -90,6 +91,17 @@ exports.showRecipes = function(req, res) {
     } 
    return res.json(data);
 });
+}
+else{
+  foodCollection.find({ }).toArray(function(err, data) {
+    if(err) {
+        console.error(JSON.stringify(err));
+        res.status(404).send("data is not found");
+    } 
+   return res.json(data);
+
+  })
+}
 };
 
 

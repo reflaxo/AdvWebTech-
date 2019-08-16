@@ -20,10 +20,4 @@ function AnswerOption(props) {
   );
 }
 
-AnswerOption.propTypes = {
-  answerType: PropTypes.string.isRequired,
-  answer: PropTypes.string.isRequired,
-  OnAnswerSelected: PropTypes.string.isRequired
-};
-
 export default AnswerOption;

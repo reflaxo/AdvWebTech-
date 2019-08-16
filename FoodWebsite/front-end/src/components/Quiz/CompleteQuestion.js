@@ -12,9 +12,8 @@ function CompleteQuestion(props) {
       className="container"
       component="div"
       transitionName="fade"
-      transitionEnterTimoeout={800}
+      transitionEnterTimeout={800}
       transitionLeaveTimeout={500}
-      transitionAppear
       transitionAppearTimeout={500}
     >
 

@@ -25,8 +25,9 @@ class QuizApp extends Component {
   //Gets Data from Backend
   componentDidMount() {
     axios
-      .get('/getRecipes')
+      .get('/getAllRecipes')
       .then(res => {
+        console.log(res);
         const recipes = res.data;
         const shuffledRecipes = this.shuffleArray(recipes);
         this.setState({

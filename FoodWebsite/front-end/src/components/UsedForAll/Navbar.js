@@ -4,10 +4,15 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem } from 'reactstrap';
+  DropdownItem,
+NavbarBrand,
+Navbar,
+NavbarToggler,
+NavItem,
+ } from 'reactstrap';
 
-  import { Nav} from "tabler-react";
-  import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+
+  import { BrowserRouter as Router, Route, Link} from "react-router-dom";
 import QuizApp from "../Quiz/QuizApp.js";
 import About from "../About/About.js";
 import Recipe from "../Recipe/Recipe.js";
@@ -16,6 +21,7 @@ import Contact from  "../Contact/Contact.js";
 import Home from "../Home/Home";
 import Register from "../Auth/Register";
 import Login from "../Auth/Login";
+import {authStatus, logout} from "./authStatus";
 
 
 
@@ -26,24 +32,18 @@ export default class FoodNavbar extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       isOpen: false,
-      loggedIn:false
     };
-
-    this.logout = this.logout.bind(this);
   }
-  componentDidMount(){
-   if( localStorage.getItem('jwtToken')){
+  componentDidUpdate(){
+    console.log(authStatus);
+   /*if(localStorage.getItem('jwtToken')){
+     if(this.state.loggedIn=false){
     this.setState({
       loggedIn:true
     });
+  }*/
    }
   
-  }
-
-  logout(){
-    localStorage.removeItem('jwtToken');
-    window.location.reload();
-  }
   
   toggle() {
     this.setState({
@@ -55,33 +55,61 @@ export default class FoodNavbar extends React.Component {
       <div>
 <Router>
 
-<Nav location={this.props.location} style={{backgroundColor: "lightyellow"}} light expand="md">
-<LinkContainer to="/login">
-  <Nav.Item
-    hasSubNav
-    value="Menu 1"
-  
-    subItems={
-      <React.Fragment>
-        <Nav.SubItem value="Sub Item 1" />
-        <Nav.SubItem>Sub Item 2</Nav.SubItem>
-        <Nav.SubItem icon="globe">Sub Item 3</Nav.SubItem>
-      </React.Fragment>
-    }
-  />
-    </LinkContainer>
-    <Nav.Item
-    hasSubNav
-    value="Menu 1"
-    subItems={
-      <React.Fragment>
-        <Nav.SubItem value="Sub Item 1" />
-        <Nav.SubItem>Sub Item 2</Nav.SubItem>
-        <Nav.SubItem icon="globe">Sub Item 3</Nav.SubItem>
-      </React.Fragment>
-    }
-  />
-</Nav>
+<Navbar location={this.props.location} style={{backgroundColor: "lightyellow"}} light expand="md">
+          
+          <NavbarBrand to="/">FoodCulture</NavbarBrand>
+      
+          <NavbarToggler onClick={this.toggle} />
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <NavItem>
+              {authStatus?(<div>Your are logged in</div>):(
+                 <div><Link to="/Login/">Login</Link></div>
+              )}
+              </NavItem>
+              <NavItem>
+                <Link to="/">Home</Link>
+              </NavItem>
+
+              <NavItem>
+                <Link to="/Quiz/">Quiz</Link>
+              </NavItem>
+
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret>
+                  Country
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <DropdownItem>
+                  <Link to="/Recipe/Germany">Germany</Link>
+                  </DropdownItem>
+                  <DropdownItem>
+                  <Link to="/Recipe/Iran">Iran</Link>
+                  </DropdownItem>
+                  <DropdownItem>
+                  <Link to="/Recipe/Korea">Korea</Link>
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+
+              <NavItem>
+                <Link to="/Contact/">Contact</Link>
+              </NavItem>
+
+              <NavItem>
+                <Link to="/About/">About Us</Link>
+              </NavItem>
+              <NavItem>
+              {authStatus?(<div><Link onClick={logout} to="/">Logout</Link></div>):(
+                 <div>   <Link to="/Register/">Sign Up</Link></div>
+              )}
+             
+              </NavItem>
+    
+
+              </Collapse>
+            </Navbar>
+      
+
 
        
         <Route path="/" exact component={Home} />
@@ -99,60 +127,3 @@ export default class FoodNavbar extends React.Component {
   }
 }
 
-/*
- <Navbar location={this.props.location} style={{backgroundColor: "lightyellow"}} light expand="md">
-          <NavbarBrand href="/">FoodCulture</NavbarBrand>
-      
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
-            <NavItem>
-              {this.state.loggedIn?(<div>Your are logged in</div>):(
-                 <div><NavLink href="/Login/">Login</NavLink></div>
-              )}
-              </NavItem>
-              <NavItem>
-                <NavLink href="/">Home</NavLink>
-              </NavItem>
-
-              <NavItem>
-                <NavLink href="/Quiz/">Quiz</NavLink>
-              </NavItem>
-
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Country
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem href="/Recipe/Germany">
-                    Germany
-                  </DropdownItem>
-                  <DropdownItem href="/Recipe/Iran">
-                   Iran
-                  </DropdownItem>
-                  <DropdownItem href="/Recipe/Korea">
-                   Korea
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-
-              <NavItem>
-                <NavLink href="/Contact/">Contact</NavLink>
-              </NavItem>
-
-              <NavItem>
-              <Link to="/">Home</Link>
-                <NavLink href="/About/">About Us</NavLink>
-              </NavItem>
-              <NavItem>
-              {this.state.loggedIn?(<div><NavLink onClick={this.logout} href="/">Logout</NavLink></div>):(
-                 <div>   <NavLink href="/Register/">Sign Up</NavLink></div>
-              )}
-             
-              </NavItem>
-    
-
-
-        
-            </Nav>
-          </Collapse>*/ 
