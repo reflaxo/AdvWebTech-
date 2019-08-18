@@ -8,7 +8,7 @@ class Contact extends React.Component {
         this.state = {apiResponse: ""};
     }
     callAPI() {
-        fetch("/contact")
+        fetch("/contact/new")
             .then(res => res.text())
             .then(res => this.setState({apiResponse: res}))
             .catch(err => err);
@@ -25,7 +25,7 @@ class Contact extends React.Component {
                     <h1 className="contactHeading"> Contact us </h1>
                 </header>
                 <div className="App12">
-                    <form method="POST" action="/submitContact">
+                    <form method="POST" action="/contact/new">
                         <div>
                             <label> 👤First Name</label>
                             <input type="text" icon="us" id="fname" name="firstname" placeholder="Your name.."/>

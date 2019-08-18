@@ -1,9 +1,8 @@
 import React from "react";
 import axios from "axios";
-import decode from "jwt-decode";
 import DeleteRecipe from "./DeleteRecipe";
 import UpdateRecipe from "./UpdateRecipe";
-import AxiosConfig from "../UsedForAll/AxiosConfig";
+
 import {
   Container,
   Card,
@@ -30,7 +29,8 @@ class DetailRecipe extends React.Component {
       image: "",
       error: "",
       updateRecipe: false,
-      id:""
+      id:"",
+      loggedIn:false
     };
   }
 
@@ -40,16 +40,19 @@ class DetailRecipe extends React.Component {
           id: this.props.match.params,
         });
 
-       /* getConfirm = () => {
-          // Using jwt-decode npm package to decode the token
-          let answer = decode(localStorage.getItem("jwtToken"));
-          console.log("Received answer!" + answer);
-          return answer;
-        };*/
+        //checks if user is logged in
+        if( localStorage.getItem('jwtToken')){
+          this.setState({loggedIn:true});
+        }
 
-
-AxiosConfig
-      .get(`/detailRecipe/${recipeId}`)
+        //sends jwtToken to check validity
+        const config = {
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem('jwtToken')}`
+          }
+        };
+//gets recipe data
+      axios.get(`/detailRecipe/${recipeId}`, config)
       .then(res => {
         const recipedata = res.data;
         this.setState({
@@ -57,8 +60,7 @@ AxiosConfig
           id: recipeId,
           image: recipedata.image.data
         });
-        console.log(res);
-        console.log(JSON.stringify(res.data));
+        console.log(this.state.recipe);
       })
       .catch(error => {
         this.setState({
@@ -87,14 +89,15 @@ AxiosConfig
                 <h1>{recipe.name}</h1>
 
               </Col>    
-              <DeleteRecipe ID={this.state.id} country={recipe.country} />
+              {this.state.loggedIn&& 
+              <div>   <Row><DeleteRecipe ID={this.state.id} country={recipe.country} />
                   <Button color="info" onClick={this.toggle}>
                 Update
-              </Button>
+              </Button>  </Row></div>}
             </Row>
 
             <Row>
-              <UpdateRecipe oldRecipe={this.state.recipedata} updateRecipe={this.state.updateRecipe} toggle={this.toggle} />
+              <UpdateRecipe recipe={recipe} name={recipe.name} updateRecipe={this.state.updateRecipe} toggle={this.toggle} />
               <Col sm="4">
                 <Card>
                   <CardHeader>Details</CardHeader>

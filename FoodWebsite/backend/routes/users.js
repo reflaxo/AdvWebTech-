@@ -14,12 +14,11 @@ const User= require("../models/userModel");
 router.post("/register", (req, res) => {
 console.log("Came to register")
   // Form validation
-const { errors, isValid } = validateRegisterInput(req.body);
-
+const { message, isValid } = validateRegisterInput(req.body);
 
 // Check validation
   if (!isValid) {
-    return res.status(400).json(errors);
+    return res.status(400).json(message);
   }
 userCollection.findOne({ name: req.body.name }).then(user => {
     if (user) {
@@ -51,14 +50,13 @@ userCollection.findOne({ name: req.body.name }).then(user => {
 
 
 router.post("/login", (req, res) => {
-  // Form validation
-  console.log(req.body);
+
 
   
-const { errors, isValid } = validateLoginInput(req.body);
+const { message, isValid } = validateLoginInput(req.body);
 // Check validation
   if (!isValid) {
-    return res.status(400).json(errors);
+    return res.status(400).json(message);
   }
 
   const password = req.body.password;
@@ -66,7 +64,7 @@ const { errors, isValid } = validateLoginInput(req.body);
   userCollection.findOne({ name: req.body.name }).then(user => {
     // Check if user exists
     if (!user) {
-      return   res.status(404).json({ usernotfound: "User not found" });
+      return   res.status(404).json({ message: "User not found" });
     }
 // Check password
     bcrypt.compare(password, user.password).then(isMatch => {
@@ -89,10 +87,9 @@ const { errors, isValid } = validateLoginInput(req.body);
           }
         );
       } else {
-        return  console.log("wrong PW");
         res
           .status(400)
-          .json({ passwordincorrect: "Password incorrect" });
+          .json({ message: "Password incorrect" });
       }
     });
   });

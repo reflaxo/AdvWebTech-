@@ -40,15 +40,22 @@ export default class FoodNavbar extends React.Component {
     this.logout = this.logout.bind(this);
     this.updateUser = this.updateUser.bind(this);
   }
+  componentDidMount(){
+    if(localStorage.getItem('jwtToken') && this.state.loggedIn===false){
+
+      this.setState({
+        loggedIn:true
+      });
+     }
+  }
   componentDidUpdate(){
     console.log(this.state.loggedIn)
 
-   if(localStorage.getItem('jwtToken')){
-     if(this.state.loggedIn=false){
+  if(localStorage.getItem('jwtToken') && this.state.loggedIn===false){
+
     this.setState({
       loggedIn:true
     });
-  }
    }
   }
   
@@ -57,7 +64,7 @@ export default class FoodNavbar extends React.Component {
     window.location.reload();
   }
 
-
+//When user logged in, it's recognized here 
   updateUser= (props) => {
     console.log("got here" + props.loggedIn + props.name);
     this.setState({     
@@ -84,7 +91,7 @@ export default class FoodNavbar extends React.Component {
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <NavItem>
-              {this.state.loggedIn?(<div>Hi {this.state.name}</div>):(
+              {this.state.loggedIn?(<div>Hello, {this.state.name}</div>):(
                  <div><Link to="/Login/">Login</Link></div>
               )}
               </NavItem>
@@ -138,7 +145,7 @@ export default class FoodNavbar extends React.Component {
         <Route path="/about/" component={About} />
         <Route path="/contact/" component={Contact} />
         <Route path={`/Recipe/:Country`}  component={Recipe} />
-           <Route path="/contact/" component={Contact} />
+        <Route path="/contact/" component={Contact} />
         <Route exact path="/Register" component={Register} />
         <Route exact path="/Login" render={(props) => <Login {...props} updateUser={this.updateUser} />}  />
         <Route path={`/detailRecipe/:recipeId`} render={(props) => <DetailRecipe {...props} name={props.name} />} />

@@ -6,6 +6,7 @@ import {
 
 } from "reactstrap";
 import axios from "axios";
+import AlertNote from "../UsedForAll/AlertNote.js";
 
 import { withRouter } from "react-router-dom";
 //Small JSX Component exporting a button that changes looks when it's clicked
@@ -20,8 +21,6 @@ class DetailRecipe extends Component {
     success:false};
     this.onDelete = this.onDelete.bind(this);
   }
-
-
 
   onDelete(ev) {
      const {recipeId} = this.props.ID;
@@ -54,15 +53,9 @@ class DetailRecipe extends Component {
 
     return (
       <div>
-             {this.state.success ? (
-       <div>
-<Alert type="success">
-  <strong>Your recipe has been successfully deleted!</strong> 
-</Alert></div>): (
-          <div>
-         {this.state.error}
-          </div>
-        )}
+              <AlertNote success={this.state.success} type="success" text= "Deleting worked!"/>
+          <AlertNote success={this.state.error} type="warning" text= "Something didn't work :("/>
+
         <Button color="danger" onClick={this.onDelete}>
          Delete
         </Button>

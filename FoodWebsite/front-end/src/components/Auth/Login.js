@@ -31,8 +31,7 @@ class Login extends Component {
       name: this.state.name,
       password: this.state.password
     };
-    console.log(userData);
-
+  
     axios
       .post("/auth/login", userData)
       .then(result => {
@@ -55,8 +54,9 @@ class Login extends Component {
       
       })
       .catch(error => {
-        console.log(error);
-        this.setState({ error: true, errors: error.message });
+        console.log(error.response);
+        console.log(error.response.data);
+        this.setState({ error: true, errors: error.response.data.message});
         setTimeout(
           function() {
             this.setState({ error: false });

@@ -33,7 +33,7 @@ class Register extends Component {
       password: this.state.password, 
       password2: this.state.passwordCheck}
 
-    axios.post("/auth/register",data)
+    axios.post("/auth/register", data)
         .then((res) => {
           //maybe instead of catching error we can get the message?
           if (res.status === 400 || res.status === 500) {
@@ -45,13 +45,16 @@ class Register extends Component {
                  this.setState({success:false});
             }.bind(this),3000);  // wait 3 seconds, then reset to false
           }
-        }).catch((error) => {
-        console.log(error);
-          this.setState({error: true, errors:error.message})
-          setTimeout(function(){
-               this.setState({error:false});
-          }.bind(this),10000); 
-    });
+        }).catch(error => {
+          this.setState({ error: true, errors: error.response.data.message});
+          setTimeout(
+            function() {
+              this.setState({ error: false });
+            }.bind(this),
+            10000
+          );
+        });
+ 
 
 }
 

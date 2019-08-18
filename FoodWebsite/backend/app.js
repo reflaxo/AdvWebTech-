@@ -7,6 +7,7 @@ var cors = require("cors");
 var mongoose = require('mongoose');
 var FoodRouter = require('./routes/foodData');
 const UsersRouter = require("./routes/users");
+const ContactRouter = require("./routes/contact");
 const bodyParser = require("body-parser");
 const passport = require("passport");
 require("./models/foodModel");
@@ -60,6 +61,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', FoodRouter);
+app.use('/contact', ContactRouter);
 app.use('/auth', UsersRouter);
 
 

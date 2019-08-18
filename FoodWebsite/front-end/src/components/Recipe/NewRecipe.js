@@ -7,13 +7,13 @@ import {
   Input,
   FormText,
   Col,
-  Alert,
-  Row,
+  
   Modal,
   ModalHeader,
   ModalBody,
   ModalFooter
 } from "reactstrap";
+import AlertNote from "../UsedForAll/AlertNote.js";
 import axios from "axios";
 
 class NewRecipe extends Component {
@@ -29,7 +29,8 @@ class NewRecipe extends Component {
       ingridients: "",
       foodType: "",
       country: "",
-      success: false
+      success: false,
+      error:false
     };
     this.onSubmit = this.onSubmit.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -54,7 +55,7 @@ class NewRecipe extends Component {
     formData.append("country", this.state.country);
     formData.append("foodType", this.state.foodType);
     formData.append("myImage", this.state.file);
-    console.log(formData);
+
     const config = {
       headers: {
         "content-type": "multipart/form-data"
@@ -63,7 +64,6 @@ class NewRecipe extends Component {
     axios
       .post("/addRecipe", formData, config)
       .then(res => {
-        console.log(formData);
         this.setState({ success: true });
         setTimeout(
           function() {
@@ -72,21 +72,27 @@ class NewRecipe extends Component {
           3000
         ); // wait 3 seconds, then reset to false
       })
-      .catch(error => {});
+      .catch(error => {
+        console.log(error);
+        this.setState({ error: true });
+        setTimeout(
+          function() {
+            this.setState({ error: false });
+          }.bind(this),
+          3000
+        ); // wait 3 seconds, then reset to false
+
+      });
   }
 
   render() {
     return (
       <div>
-        {this.state.success ? (
-          <div>
-            <Alert type="success">
-              <strong>Your recipe has been successfully uploaded!</strong>
-            </Alert>
-          </div>
-        ) : (
-          <div>{this.state.error}</div>
-        )}
+  
+            <AlertNote success={this.state.success} type="success" text= "Your recipe has been successfully uploaded!"/>
+            <AlertNote success={this.state.error} type="warning" text= "Something didn't work :("/>
+    
+     
 
         <Modal isOpen={this.props.addRecipe} toggle={this.props.toggle}>
           <ModalHeader toggle={this.toggle}>Add New Recipe</ModalHeader>
