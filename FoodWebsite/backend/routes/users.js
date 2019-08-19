@@ -1,98 +1,66 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
+var usersController = require("../controllers/usersController");
+//const passport = require('../config/passport');
 const jwt = require("jsonwebtoken");
-const keys = require("../config/keys");
-// Load input validation
-const validateRegisterInput = require("../validation/register");
-const validateLoginInput = require("../validation/login");
-// Load User model
-const User= require("../models/userModel");
+const jwtVerify = require('../config/jwt');
 
+const passport = require('../config/passport');
 
+router.post("/register",  usersController.addUser);
 
-router.post("/register", (req, res) => {
-console.log("Came to register")
-  // Form validation
-const { message, isValid } = validateRegisterInput(req.body);
+// Matches with "/api/users"
+router
+  .route("/")
+  .get(jwtVerify.confirmToken, jwtVerify.verifyToken, usersController.findAll);
 
-// Check validation
-  if (!isValid) {
-    return res.status(400).json(message);
-  }
-userCollection.findOne({ name: req.body.name }).then(user => {
-    if (user) {
-      return res.status(400).json("Name already exists - please choose another one");
+// Matches with "/api/users/check"
+router.route("/check").get(usersController.findOne);
+
+// Matches with "/users/current"
+router
+  .route("/current")
+  .get(jwtVerify.confirmToken, jwtVerify.verifyToken, (req, res, next) => {
+    if (req.user) {
+      console.log("req.user", req.user);
+      res.json({ user: req.user, authenticated: req.isAuthenticated() });
     } else {
-      const newUser = new User({
-        name: req.body.name,
-        password: req.body.password
-      });
-// Hash password before saving in database
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err;
-          newUser.password = hash;
-         
-            userCollection.insert(newUser, (error, result) => {
-              if(error) {
-                  return  response.status(500).send(error);
-              }
-              console.log(result);
-              res.send(result.result);
-          });
-        });
-      });
+      res.json({ user: null });
     }
   });
-});
 
+//User login on /users/login
+router.route("/login").post(passport.authenticate("local"), usersController.login);
 
-
-router.post("/login", (req, res) => {
-
-
-  
-const { message, isValid } = validateLoginInput(req.body);
-// Check validation
-  if (!isValid) {
-    return res.status(400).json(message);
+//User logout on /users/logout
+router.route("/logout").post((req, res) => {
+  if (req.user) {
+    req.logout();
+    res.send({ msg: "logging out" });
+  } else {
+    res.send({ msg: "no user to log out" });
   }
-
-  const password = req.body.password;
-// Find user by email
-  userCollection.findOne({ name: req.body.name }).then(user => {
-    // Check if user exists
-    if (!user) {
-      return   res.status(404).json({ message: "User not found" });
-    }
-// Check password
-    bcrypt.compare(password, user.password).then(isMatch => {
-      if (isMatch) {
-        // User matched
-        // Create JWT Payload
-        const payload = {
-          id: user.id,
-          name: user.name
-        };
-// Sign token
-        jwt.sign(
-          payload,
-          keys.secretOrKey,
-          (err, token) => {
-            res.json({
-              success: true,
-              token: "JWT " + token
-            });
-          }
-        );
-      } else {
-        res
-          .status(400)
-          .json({ message: "Password incorrect" });
-      }
-    });
-  });
 });
+
+// Matches with "/users/:id"
+router
+  .route("/:id")
+  .get(usersController.findById)
+  .put(jwtVerify.confirmToken, jwtVerify.verifyToken, usersController.update)
+  .delete(usersController.remove);
+
+// Matches with "/users/password/:id"
+router
+  .route("/password/:id")
+  .get(usersController.findById)
+  .put(
+    jwtVerify.confirmToken,
+    jwtVerify.verifyToken,
+    usersController.updatePassword
+  )
+  .delete(usersController.remove);
 
 module.exports = router;
+
+
+

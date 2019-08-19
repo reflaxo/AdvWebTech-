@@ -1,48 +1,43 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-var bcrypt = require('bcrypt-nodejs');
+const bcrypt = require("bcryptjs");
 // Create User Schema
 const UserSchema = new Schema({
   name: {
     type: String,
     unique: true,
-    required: true,
-
+    required: true
   },
-  image:  { data: Buffer, contentType: String },
-  favorites: {type: String,  max: 1000},
+  image: { data: Buffer, contentType: String },
+  favorites: { type: String, max: 1000 },
   password: {
     type: String,
     required: true
-  }
+  },
+  email: { type: String, unique: true, required: false, default: null },
+  title: { type: String, required: false, default: null },
+  isActive: { type: Boolean, default: true },
+  session: { type: Boolean, default: false }
 });
 
-UserSchema.pre('save', function (next) {
-  var user = this;
-  if (this.isModified('password') || this.isNew) {
-      bcrypt.genSalt(10, function (err, salt) {
-          if (err) {
-              return next(err);
-          }
-          bcrypt.hash(user.password, salt, null, function (err, hash) {
-              if (err) {
-                  return next(err);
-              }
-              user.password = hash;
-              next();
-          });
-      });
-  } else {
-      return next();
+// Define schema methods
+UserSchema.methods = {
+  checkPassword: function(inputPassword) {
+    return bcrypt.compareSync(inputPassword, this.password);
+  },
+  hashPassword: plainTextPassword => {
+    return bcrypt.hashSync(plainTextPassword, 10);
   }
-});
-
-UserSchema.methods.comparePassword = function (passw, cb) {
-  bcrypt.compare(passw, this.password, function (err, isMatch) {
-      if (err) {
-          return cb(err);
-      }
-      cb(null, isMatch);
-  });
 };
+
+// Define hooks for pre-saving
+UserSchema.pre("save", function(next) {
+  if (!this.password) {
+    next();
+  } else {
+    this.password = this.hashPassword(this.password);
+    next();
+  }
+});
+
 module.exports = User = mongoose.model("User", UserSchema);

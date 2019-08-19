@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var contactControl = require('../controllers/contactFormController');
-var passport = require('passport');
-require('../config/passport')(passport);
+const passport = require('../config/passport');
+
 
 
 router.post('/new',  contactControl.addContact);
