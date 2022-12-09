@@ -2,7 +2,7 @@
   "name": "",
   "version": "",
   "dependencies": {
-    "express": "^4.16.4",
+    "express": "^4.17.3",
     "mongodb": "^3.2.3",
     "mongoose": "^5.5.5",
     "nodemon": "^1.19.0"
